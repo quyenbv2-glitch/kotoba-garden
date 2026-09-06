@@ -254,36 +254,55 @@ function QuizMode({ words, progress, uid, onComplete, onClose }: ReviewSessionPr
         </div>
 
         <div className="text-center mb-6">
-          <div className="text-4xl font-bold text-gray-800 mb-2">{currentWord.kanji}</div>
+          <div className="text-sm text-gray-500 mb-2">Chọn nghĩa đúng cho:</div>
+          <div className="text-5xl font-bold text-gray-800 mb-2">{currentWord.kanji}</div>
           <div className="text-xl text-gray-600">{currentWord.kana}</div>
           <div className="text-gray-400">{currentWord.romaji}</div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          {options.map((option) => (
-            <Button
-              key={option.id}
-              variant={showResult
-                ? option.id === currentWord.id
-                  ? "default"
-                  : option.id === selectedOption
-                  ? "destructive"
-                  : "outline"
-                : "outline"
-              }
-              onClick={() => !showResult && handleSelect(option.id)}
-              className="h-16 text-left justify-start"
-              disabled={showResult}
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">{option.kanji}</span>
-                <div>
-                  <div className="font-medium">{option.meaning}</div>
-                  <div className="text-sm text-gray-500">{option.kana} ({option.romaji})</div>
+          {options.map((option) => {
+            const isCorrect = option.id === currentWord.id;
+            const isSelectedWrong = option.id === selectedOption && option.id !== currentWord.id;
+            const isSelectedCorrect = option.id === selectedOption && option.id === currentWord.id;
+
+            // Khi chưa trả lời: chỉ hiện nghĩa tiếng Việt
+            // Khi trả lời rồi: làm nổi bật đúng/sai, hiện thêm kana/romaji
+            return (
+              <Button
+                key={option.id}
+                variant={
+                  showResult
+                    ? isCorrect
+                      ? "default"
+                      : isSelectedWrong
+                      ? "destructive"
+                      : "outline"
+                    : "outline"
+                }
+                onClick={() => !showResult && handleSelect(option.id)}
+                className={`h-16 text-left justify-start ${
+                  showResult && isCorrect
+                    ? "ring-2 ring-emerald-400 ring-offset-2"
+                    : ""
+                }`}
+                disabled={showResult}
+              >
+                <div className="flex items-center gap-3 w-full">
+                  <div className="flex-1">
+                    <div className="font-medium">{option.meaning}</div>
+                    {showResult && (
+                      <div className="text-xs text-gray-500 mt-0.5">
+                        {option.kanji} · {option.romaji}
+                      </div>
+                    )}
+                  </div>
+                  {showResult && isCorrect && <span className="text-lg">✓</span>}
+                  {showResult && isSelectedWrong && <span className="text-lg">✗</span>}
                 </div>
-              </div>
-            </Button>
-          ))}
+              </Button>
+            );
+          })}
         </div>
 
         {showResult && (
@@ -546,10 +565,10 @@ function SpeedReviewMode({ words, progress, uid, onComplete, onClose }: ReviewSe
           />
         </div>
 
-        {/* Word */}
+        {/* Word - chỉ hiện kanji, ẩn kana/meaning */}
         <div className="text-center mb-6">
-          <div className="text-5xl font-bold text-gray-800 mb-2">{currentWord.kanji}</div>
-          <div className="text-xl text-gray-600">{currentWord.kana}</div>
+          <div className="text-sm text-gray-500 mb-2">Bạn có nhớ từ này không?</div>
+          <div className="text-6xl font-bold text-gray-800">{currentWord.kanji}</div>
         </div>
 
         {/* Options */}
@@ -561,14 +580,14 @@ function SpeedReviewMode({ words, progress, uid, onComplete, onClose }: ReviewSe
               className="h-14 text-lg"
               disabled={!isActive}
             >
-              Sai
+              ❌ Không nhớ
             </Button>
             <Button
               onClick={() => handleAnswer(4)}
               className="h-14 text-lg"
               disabled={!isActive}
             >
-              Đúng
+              ✅ Nhớ rồi
             </Button>
           </div>
         ) : (
@@ -576,10 +595,10 @@ function SpeedReviewMode({ words, progress, uid, onComplete, onClose }: ReviewSe
             <div className="text-center">
               <div className="text-4xl mb-2">{isCorrect ? "✅" : "❌"}</div>
               <div className="text-xl font-medium">
-                {isCorrect ? "Chính xác!" : "Hết giờ / Sai!"}
+                {isCorrect ? "Tuyệt vời!" : "Tiếc quá!"}
               </div>
               <div className="text-sm text-gray-500 mt-1">
-                {currentWord.meaning} ({currentWord.kana})
+                {currentWord.meaning} · {currentWord.kana} ({currentWord.romaji})
               </div>
             </div>
           </div>
