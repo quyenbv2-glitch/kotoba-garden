@@ -1,4 +1,4 @@
-import { PlantStageId, PLANT_STAGES, WITHERED_STAGE } from "../types/kotoba";
+import { PlantStageId, PLANT_STAGES, WITHERED_STAGE } from "../../types/kotoba";
 
 interface PlantStageBadgeProps {
   stage: PlantStageId;
