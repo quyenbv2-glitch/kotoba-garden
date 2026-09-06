@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Word, UserWordProgress, ReviewMode } from "../types/kotoba";
 import { computeSRSReview, calculateXP } from "../utils/srsCalculator";
 import { updateWordProgress, getWordProgress } from "../services/progressService";
@@ -458,81 +458,85 @@ function TypingMode({ words, progress, uid, onComplete, onClose }: ReviewSession
 function SpeedReviewMode({ words, progress, uid, onComplete, onClose }: ReviewSessionProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
-  const [isActive, setIsActive] = useState(true);
-  const [results, setResults] = useState<{ wordId: string; quality: number }[]>([]);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
 
   const currentWord = words[currentIndex];
   const currentProgress = progress.find((p) => p.wordId === currentWord?.id);
 
-  // Timer
+  // Refs để tránh re-render loop và stale closure
+  const stateRef = useRef({ currentWord, currentIndex, showResult });
+  stateRef.current = { currentWord, currentIndex, showResult };
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const advanceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Hàm chuyển câu tiếp theo (dùng ref để tránh stale closure)
+  const advanceToNext = useCallback(() => {
+    const { currentIndex: idx, currentWord: w } = stateRef.current;
+    if (idx < words.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+      setTimeLeft(10);
+      setShowResult(false);
+      setIsCorrect(false);
+    } else {
+      // Kết thúc
+      if (timerRef.current) clearInterval(timerRef.current);
+      onClose();
+    }
+  }, [words.length, onClose]);
+
+  // Timer chính — chỉ phụ thuộc currentIndex (chạy lại khi chuyển câu mới)
   useEffect(() => {
-    if (!isActive || !currentWord) return;
-    const timer = setInterval(() => {
+    if (showResult) return; // Đã trả lời thì dừng timer
+
+    timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          handleTimeUp();
+          // Hết giờ
+          if (timerRef.current) clearInterval(timerRef.current);
+          const w = stateRef.current.currentWord;
+          if (w) {
+            setShowResult(true);
+            setIsCorrect(false);
+            updateWordProgress(uid, w.id, w.courseId, { quality: 1 });
+            advanceRef.current = setTimeout(advanceToNext, 1500);
+          }
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
-    return () => clearInterval(timer);
-  }, [isActive, currentWord]);
 
-  const handleTimeUp = async () => {
-    if (!currentWord) return;
-    setIsActive(false);
-    setShowResult(true);
-    setIsCorrect(false);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+      if (advanceRef.current) clearTimeout(advanceRef.current);
+    };
+  }, [currentIndex, showResult, uid, advanceToNext]);
 
-    await updateWordProgress(uid, currentWord.id, currentWord.courseId, { quality: 1 });
-    setResults((prev) => [...prev, { wordId: currentWord.id, quality: 1 }]);
+  const handleAnswer = useCallback(
+    (quality: 0 | 1 | 2 | 3 | 4 | 5) => {
+      const w = stateRef.current.currentWord;
+      if (!w) return;
+      if (timerRef.current) clearInterval(timerRef.current);
 
-    setTimeout(() => {
-      if (currentIndex < words.length - 1) {
-        setCurrentIndex((prev) => prev + 1);
-        setTimeLeft(10);
-        setIsActive(true);
-        setShowResult(false);
-      } else {
-        onComplete(results);
-        onClose();
+      setShowResult(true);
+      setIsCorrect(quality >= 3);
+
+      updateWordProgress(uid, w.id, w.courseId, { quality });
+
+      if (quality >= 3) {
+        confetti({
+          particleCount: 20,
+          spread: 50,
+          origin: { y: 0.6 },
+          colors: ["#10B981", "#22C55E"],
+        });
       }
-    }, 1500);
-  };
 
-  const handleAnswer = async (quality: 0 | 1 | 2 | 3 | 4 | 5) => {
-    if (!currentWord) return;
-    setIsActive(false);
-    setShowResult(true);
-    setIsCorrect(quality >= 3);
-
-    await updateWordProgress(uid, currentWord.id, currentWord.courseId, { quality });
-    setResults((prev) => [...prev, { wordId: currentWord.id, quality }]);
-
-    if (quality >= 3) {
-      confetti({
-        particleCount: 20,
-        spread: 50,
-        origin: { y: 0.6 },
-        colors: ["#10B981", "#22C55E"],
-      });
-    }
-
-    setTimeout(() => {
-      if (currentIndex < words.length - 1) {
-        setCurrentIndex((prev) => prev + 1);
-        setTimeLeft(10);
-        setIsActive(true);
-        setShowResult(false);
-      } else {
-        onComplete(results);
-        onClose();
-      }
-    }, 1000);
-  };
+      advanceRef.current = setTimeout(advanceToNext, 1000);
+    },
+    [uid, advanceToNext]
+  );
 
   if (!currentWord) {
     return (
@@ -578,14 +582,12 @@ function SpeedReviewMode({ words, progress, uid, onComplete, onClose }: ReviewSe
               variant="destructive"
               onClick={() => handleAnswer(1)}
               className="h-14 text-lg"
-              disabled={!isActive}
             >
               ❌ Không nhớ
             </Button>
             <Button
               onClick={() => handleAnswer(4)}
               className="h-14 text-lg"
-              disabled={!isActive}
             >
               ✅ Nhớ rồi
             </Button>
@@ -603,6 +605,19 @@ function SpeedReviewMode({ words, progress, uid, onComplete, onClose }: ReviewSe
             </div>
           </div>
         )}
+
+        {/* Nút thoát khẩn cấp */}
+        <Button
+          variant="ghost"
+          onClick={() => {
+            if (timerRef.current) clearInterval(timerRef.current);
+            if (advanceRef.current) clearTimeout(advanceRef.current);
+            onClose();
+          }}
+          className="w-full mt-3 text-gray-400 text-sm"
+        >
+          Thoát
+        </Button>
       </CardContent>
     </Card>
   );
