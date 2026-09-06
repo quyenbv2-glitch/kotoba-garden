@@ -237,29 +237,29 @@ export default function Index() {
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {courses.map((course: any) => (
-                      <Button
+                      <button
                         key={course.id}
                         onClick={() => handleCourseSelect(course.id)}
-                        className={`w-full flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50 transition-all text-left ${
-                          selectedCourse === course.id ? "border-emerald-300 bg-emerald-50" : ""
+                        className={`w-full flex items-center gap-4 p-4 rounded-lg border bg-white text-left transition-all hover:border-emerald-300 hover:bg-emerald-50 hover:shadow-sm ${
+                          selectedCourse === course.id
+                            ? "border-emerald-400 bg-emerald-50 shadow-sm"
+                            : "border-gray-200"
                         }`}
                       >
-                        <div className="flex-1">
-                          <h3 className="font-medium text-gray-900">{course.title}</h3>
-                          <p className="text-sm text-gray-500 line-clamp-2">{course.description}</p>
-                          <div className="mt-2 flex items-center gap-2 text-xs">
-                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-600">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 truncate">{course.title}</h3>
+                          <p className="text-sm text-gray-500 line-clamp-2 mt-1">{course.description}</p>
+                          <div className="mt-3 flex items-center gap-2 text-xs">
+                            <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">
                               {course.level}
                             </span>
-                            <span className="text-gray-400">{course.wordCount} từ</span>
+                            <span className="text-gray-500">📚 {course.wordCount} từ</span>
                           </div>
                         </div>
-                        <PlantStageBadge
-                          stage={6}
-                          size="sm"
-                          className="ml-4"
-                        />
-                      </Button>
+                        <div className="flex-shrink-0">
+                          <PlantStageBadge stage={6} size="sm" />
+                        </div>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -268,17 +268,17 @@ export default function Index() {
               {/* Plant Garden */}
               {selectedCourse && !showReview && !showImport && (
                 <>
-                  <div className="mb-6">
-                    <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                  <div className="mb-6 flex items-center justify-between flex-wrap gap-3">
+                    <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
                       🌱 Vườn Kotoba
                     </h2>
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                      <div className="flex items-center">
-                        <span className="text-xl">🔥</span>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-50 text-orange-700 text-sm font-medium">
+                        <span>🔥</span>
                         <span>{profile?.streakCount || 0} ngày</span>
                       </div>
-                      <div className="flex items-center">
-                        <span className="text-xl">💎</span>
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-50 text-purple-700 text-sm font-medium">
+                        <span>💎</span>
                         <span>{profile?.totalXp || 0} XP</span>
                       </div>
                     </div>
@@ -291,37 +291,23 @@ export default function Index() {
                       alert(`Chi tiết từ: ${wordId}`);
                     }}
                   />
-                  <div className="mt-6 flex justify-center space-x-3">
-                    <Button
-                      onClick={() => handleModeSelect("planting")}
-                      variant="outline"
-                    >
-                      Học từ mới
-                    </Button>
-                    <Button
-                      onClick={() => handleModeSelect("quiz")}
-                      variant="outline"
-                    >
-                      Trắc nghiệm
-                    </Button>
-                    <Button
-                      onClick={() => handleModeSelect("typing")}
-                      variant="outline"
-                    >
-                      Gõ từ
-                    </Button>
-                    <Button
-                      onClick={() => handleModeSelect("speed")}
-                      variant="outline"
-                    >
-                      Tốc độ
-                    </Button>
-                    <Button
-                      onClick={() => handleModeSelect("watering")}
-                      variant="outline"
-                    >
-                      Tưới nước
-                    </Button>
+                  <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                    {[
+                      { mode: "planting", icon: "🌱", label: "Học từ mới", color: "emerald" },
+                      { mode: "quiz", icon: "🎯", label: "Trắc nghiệm", color: "blue" },
+                      { mode: "typing", icon: "⌨️", label: "Gõ từ", color: "purple" },
+                      { mode: "speed", icon: "⚡", label: "Tốc độ", color: "amber" },
+                      { mode: "watering", icon: "💧", label: "Tưới nước", color: "cyan" },
+                    ].map((m) => (
+                      <button
+                        key={m.mode}
+                        onClick={() => handleModeSelect(m.mode as any)}
+                        className="flex flex-col items-center justify-center gap-2 p-4 rounded-lg border border-gray-200 bg-white hover:border-emerald-300 hover:bg-emerald-50 hover:shadow-sm transition-all"
+                      >
+                        <span className="text-3xl">{m.icon}</span>
+                        <span className="text-sm font-medium text-gray-700">{m.label}</span>
+                      </button>
+                    ))}
                   </div>
                 </>
               )}
