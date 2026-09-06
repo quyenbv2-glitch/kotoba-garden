@@ -5,24 +5,25 @@
 
 import { UserProfile } from "../types/kotoba";
 import {
-  getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
-  signOut,
+  firebaseSignOut,
   onAuthStateChanged,
-  User,
   updateProfile,
-} from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { app } from "../lib/firebase";
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  auth,
+  db,
+} from "../lib/firebase";
+import type { User } from "firebase/auth";
 
 /**
- * Khởi tạo Firebase services
+ * Khởi tạo Google Auth provider
  */
-const auth = getAuth(app);
-const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
 /**
@@ -122,7 +123,7 @@ export const loginWithGoogle = async (): Promise<{ uid: string; displayName: str
  */
 export const logout = async (): Promise<void> => {
   try {
-    await signOut(auth);
+    await firebaseSignOut(auth);
   } catch (error: any) {
     throw new Error(error.message || "Đăng xuất thất bại");
   }

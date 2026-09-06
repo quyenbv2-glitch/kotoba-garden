@@ -62,6 +62,26 @@ export {
   type User,
 } from "firebase/auth";
 
+// Re-export firestore functions
+export {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  writeBatch,
+  deleteDoc,
+  onSnapshot,
+  Timestamp,
+  type DocumentReference,
+  type DocumentData,
+} from "firebase/firestore";
+
 export { app, auth, db, storage, functions };
 export const isFirebaseConfigured = (): boolean => {
   return (

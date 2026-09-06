@@ -18,7 +18,7 @@ import {
   writeBatch,
   onSnapshot,
   Timestamp,
-} from "firebase/firestore";
+} from "../lib/firebase";
 import { computeSRSReview, isDueForReview } from "../utils/srsCalculator";
 
 /**

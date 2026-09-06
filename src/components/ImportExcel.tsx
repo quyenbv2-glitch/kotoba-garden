@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Alert, AlertDescription } from "./ui/alert";
 import { parseExcelFile, createTemplateFile, downloadFile } from "../utils/excelHandler";
-import { addDoc, collection, getDoc, doc, writeBatch, updateDoc } from "firebase/firestore";
+import { addDoc, collection, getDoc, doc, writeBatch, updateDoc } from "../lib/firebase";
 import { db } from "../lib/firebase";
 
 interface ImportExcelProps {
