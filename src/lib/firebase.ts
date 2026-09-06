@@ -6,7 +6,7 @@
 // Firebase imports
 import { initializeApp, getApps, FirebaseApp } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
-import { getFirestore, Firestore, enableIndexedDbPersistence, enableMultiTabIndexedDbPersistence } from "firebase/firestore";
+import { getFirestore, Firestore } from "firebase/firestore";
 import { getStorage, FirebaseStorage } from "firebase/storage";
 import { getFunctions, Functions } from "firebase/functions";
 
@@ -41,14 +41,8 @@ db = getFirestore(app);
 storage = getStorage(app);
 functions = getFunctions(app);
 
-// Enable offline persistence for Firestore
-enableIndexedDbPersistence(db).catch((err) => {
-  if (err.code === "failed-precondition") {
-    console.warn("Firestore persistence unavailable: Multiple tabs open");
-  } else if (err.code === "unimplemented") {
-    console.warn("Firestore persistence unavailable: Browser not supported");
-  }
-});
+// Lưu ý: Firebase v9+ đã bật offline persistence mặc định thông qua cache.
+// enableIndexedDbPersistence() đã deprecated; không cần gọi thủ công.
 
 // Re-export auth functions
 export {

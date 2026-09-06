@@ -32,8 +32,13 @@ export default function Index() {
     const unsubscribe = onAuthStateChanged(auth, async (userAuth) => {
       if (userAuth) {
         setUser(userAuth);
-        const profileData = await getUserProfile(userAuth.uid);
-        setProfile(profileData);
+        try {
+          const profileData = await getUserProfile(userAuth.uid);
+          setProfile(profileData);
+        } catch (e) {
+          console.warn("Profile offline/unavailable:", e);
+          setProfile(null);
+        }
         loadUserData(userAuth.uid);
       } else {
         setUser(null);
@@ -56,21 +61,26 @@ export default function Index() {
   const loadUserData = async (uid: string) => {
     try {
       setLoading(true);
-      
-      // Load progress
-      const userProgress = await getUserProgress(uid);
-      setProgress(userProgress);
-      
+
+      // Load progress (trả về [] nếu offline / lỗi)
+      try {
+        const userProgress = await getUserProgress(uid);
+        setProgress(userProgress);
+      } catch (e) {
+        console.warn("Progress offline/unavailable, using empty list:", e);
+        setProgress([]);
+      }
+
       // Load sample words
       const allWords = new Map<string, any>();
       [...HIRAGANA_WORDS, ...KATAKANA_WORDS, ...JLPT_N5_WORDS].forEach((word) => {
         allWords.set(word.id, word);
       });
       setWords(allWords);
-      
+
       // Load sample courses
       setCourses(SAMPLE_COURSES);
-      
+
       setLoading(false);
     } catch (error) {
       console.error("Error loading user data:", error);
