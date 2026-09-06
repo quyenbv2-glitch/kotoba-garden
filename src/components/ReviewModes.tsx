@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 import { Progress } from "./ui/progress";
 import { Alert, AlertDescription } from "./ui/alert";
-import { confetti } from "canvas-confetti";
+import confetti from "canvas-confetti";
 
 interface ReviewSessionProps {
   mode: ReviewMode;

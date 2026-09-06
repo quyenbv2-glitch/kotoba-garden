@@ -5,9 +5,13 @@ import { AuthForm } from "../components/AuthForm";
 import { PlantGarden } from "../components/PlantGarden";
 import { ReviewSession, ReviewMode } from "../components/ReviewModes";
 import { ImportExcel } from "../components/ImportExcel";
+import { Statistics } from "../components/Statistics";
+import { Leaderboard } from "../components/Leaderboard";
+import { FirebaseToolkit } from "../components/FirebaseToolkit";
 import { PlantStageBadge } from "../components/ui/plant-stage-badge";
 import { onAuthStateChanged, firebaseSignOut, auth, db } from "../lib/firebase";
-import { getUserProgress, getUserProfile } from "../services/progressService";
+import { getUserProgress } from "../services/progressService";
+import { getUserProfile } from "../services/authService";
 import { SAMPLE_COURSES, HIRAGANA_WORDS, KATAKANA_WORDS, JLPT_N5_WORDS, getWordsByCourse } from "../data/sampleWords";
 
 export default function Index() {
@@ -20,6 +24,7 @@ export default function Index() {
   const [selectedMode, setSelectedMode] = useState<"planting" | "quiz" | "typing" | "speed" | "watering" | null>(null);
   const [showReview, setShowReview] = useState(false);
   const [showImport, setShowImport] = useState(false);
+  const [activeTab, setActiveTab] = useState<"garden" | "stats" | "leaderboard" | "toolkit">("garden");
   const [loading, setLoading] = useState(true);
 
   // Auth state
@@ -140,25 +145,47 @@ export default function Index() {
                 <div className="text-3xl font-bold text-emerald-600">🌱 KotobaGarden</div>
               </div>
               <div className="hidden md:block">
-                <div className="ml-10 flex items-baseline space-x-4">
-                  <a
-                    href="#"
-                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                <div className="ml-10 flex items-baseline space-x-1">
+                  <button
+                    onClick={() => setActiveTab("garden")}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                      activeTab === "garden"
+                        ? "text-emerald-600 bg-emerald-50"
+                        : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                    }`}
                   >
-                    Vườn Kotoba
-                  </a>
-                  <a
-                    href="#"
-                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                    🌱 Vườn
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("stats")}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                      activeTab === "stats"
+                        ? "text-emerald-600 bg-emerald-50"
+                        : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                    }`}
                   >
-                    Học tập
-                  </a>
-                  <a
-                    href="#"
-                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                    📊 Thống kê
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("leaderboard")}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                      activeTab === "leaderboard"
+                        ? "text-emerald-600 bg-emerald-50"
+                        : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                    }`}
                   >
-                    Thống kê
-                  </a>
+                    🏆 Xếp hạng
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("toolkit")}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all ${
+                      activeTab === "toolkit"
+                        ? "text-emerald-600 bg-emerald-50"
+                        : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                    }`}
+                  >
+                    🛠️ Firebase
+                  </button>
                 </div>
               </div>
             </div>
@@ -183,108 +210,130 @@ export default function Index() {
       {/* Main */}
       <main className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Course Selector */}
-          {selectedCourse === null && courses.length > 0 && (
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-gray-800">Chọn khóa học</h2>
-                <Button
-                  onClick={() => setShowImport(true)}
-                  variant="outline"
-                >
-                  Nhập từ Excel
-                </Button>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {courses.map((course: any) => (
-                  <Button
-                    key={course.id}
-                    onClick={() => handleCourseSelect(course.id)}
-                    className={`w-full flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50 transition-all text-left ${
-                      selectedCourse === course.id ? "border-emerald-300 bg-emerald-50" : ""
-                    }`}
-                  >
-                    <div className="flex-1">
-                      <h3 className="font-medium text-gray-900">{course.title}</h3>
-                      <p className="text-sm text-gray-500 line-clamp-2">{course.description}</p>
-                      <div className="mt-2 flex items-center gap-2 text-xs">
-                        <span className="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-600">
-                          {course.level}
-                        </span>
-                        <span className="text-gray-400">{course.wordCount} từ</span>
-                      </div>
-                    </div>
-                    <PlantStageBadge
-                      stage={6}
-                      size="sm"
-                      className="ml-4"
-                    />
-                  </Button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Plant Garden */}
-          {selectedCourse && !showReview && !showImport && (
+          {/* Tab: Plant Garden */}
+          {activeTab === "garden" && (
             <>
-              <div className="mb-6">
-                <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                  🌱 Vườn Kotoba
-                </h2>
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <div className="flex items-center">
-                    <span className="text-xl">🔥</span>
-                    <span>{profile?.streakCount || 0} ngày</span>
+              {/* Course Selector */}
+              {selectedCourse === null && courses.length > 0 && (
+                <div className="mb-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-bold text-gray-800">Chọn khóa học</h2>
+                    <Button
+                      onClick={() => setShowImport(true)}
+                      variant="outline"
+                    >
+                      Nhập từ Excel
+                    </Button>
                   </div>
-                  <div className="flex items-center">
-                    <span className="text-xl">💎</span>
-                    <span>{profile?.totalXp || 0} XP</span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {courses.map((course: any) => (
+                      <Button
+                        key={course.id}
+                        onClick={() => handleCourseSelect(course.id)}
+                        className={`w-full flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50 transition-all text-left ${
+                          selectedCourse === course.id ? "border-emerald-300 bg-emerald-50" : ""
+                        }`}
+                      >
+                        <div className="flex-1">
+                          <h3 className="font-medium text-gray-900">{course.title}</h3>
+                          <p className="text-sm text-gray-500 line-clamp-2">{course.description}</p>
+                          <div className="mt-2 flex items-center gap-2 text-xs">
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-gray-100 text-gray-600">
+                              {course.level}
+                            </span>
+                            <span className="text-gray-400">{course.wordCount} từ</span>
+                          </div>
+                        </div>
+                        <PlantStageBadge
+                          stage={6}
+                          size="sm"
+                          className="ml-4"
+                        />
+                      </Button>
+                    ))}
                   </div>
                 </div>
-              </div>
-              <PlantGarden
-                progress={progress}
-                words={words}
-                onWordClick={(wordId) => {
-                  // Show word details or start review
-                  alert(`Chi tiết từ: ${wordId}`);
-                }}
-              />
-              <div className="mt-6 flex justify-center space-x-3">
-                <Button
-                  onClick={() => handleModeSelect("planting")}
-                  variant="outline"
-                >
-                  Học từ mới
-                </Button>
-                <Button
-                  onClick={() => handleModeSelect("quiz")}
-                  variant="outline"
-                >
-                  Trắc nghiệm
-                </Button>
-                <Button
-                  onClick={() => handleModeSelect("typing")}
-                  variant="outline"
-                >
-                  Gõ từ
-                </Button>
-                <Button
-                  onClick={() => handleModeSelect("speed")}
-                  variant="outline"
-                >
-                  Tốc độ
-                </Button>
-                <Button
-                  onClick={() => handleModeSelect("watering")}
-                  variant="outline"
-                >
-                  Tưới nước
-                </Button>
-              </div>
+              )}
+
+              {/* Plant Garden */}
+              {selectedCourse && !showReview && !showImport && (
+                <>
+                  <div className="mb-6">
+                    <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                      🌱 Vườn Kotoba
+                    </h2>
+                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <div className="flex items-center">
+                        <span className="text-xl">🔥</span>
+                        <span>{profile?.streakCount || 0} ngày</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-xl">💎</span>
+                        <span>{profile?.totalXp || 0} XP</span>
+                      </div>
+                    </div>
+                  </div>
+                  <PlantGarden
+                    progress={progress}
+                    words={words}
+                    onWordClick={(wordId) => {
+                      // Show word details or start review
+                      alert(`Chi tiết từ: ${wordId}`);
+                    }}
+                  />
+                  <div className="mt-6 flex justify-center space-x-3">
+                    <Button
+                      onClick={() => handleModeSelect("planting")}
+                      variant="outline"
+                    >
+                      Học từ mới
+                    </Button>
+                    <Button
+                      onClick={() => handleModeSelect("quiz")}
+                      variant="outline"
+                    >
+                      Trắc nghiệm
+                    </Button>
+                    <Button
+                      onClick={() => handleModeSelect("typing")}
+                      variant="outline"
+                    >
+                      Gõ từ
+                    </Button>
+                    <Button
+                      onClick={() => handleModeSelect("speed")}
+                      variant="outline"
+                    >
+                      Tốc độ
+                    </Button>
+                    <Button
+                      onClick={() => handleModeSelect("watering")}
+                      variant="outline"
+                    >
+                      Tưới nước
+                    </Button>
+                  </div>
+                </>
+              )}
             </>
           )}
+
+          {/* Tab: Statistics */}
+          {activeTab === "stats" && (
+            <Statistics
+              progress={progress}
+              words={words}
+              profile={profile}
+            />
+          )}
+
+          {/* Tab: Leaderboard */}
+          {activeTab === "leaderboard" && (
+            <Leaderboard currentUid={user?.uid} />
+          )}
+
+          {/* Tab: Firebase Toolkit */}
+          {activeTab === "toolkit" && <FirebaseToolkit />}
 
           {/* Review Session */}
           {showReview && selectedMode && selectedCourse && (

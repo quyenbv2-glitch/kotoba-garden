@@ -6,7 +6,7 @@
 // Firebase imports
 import { initializeApp, getApps, FirebaseApp } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
-import { getFirestore, Firestore, enableIndexedDbPersistence } from "firebase/firestore";
+import { getFirestore, Firestore, enableIndexedDbPersistence, enableMultiTabIndexedDbPersistence } from "firebase/firestore";
 import { getStorage, FirebaseStorage } from "firebase/storage";
 import { getFunctions, Functions } from "firebase/functions";
 
@@ -78,6 +78,7 @@ export {
   deleteDoc,
   onSnapshot,
   Timestamp,
+  limit,
   type DocumentReference,
   type DocumentData,
 } from "firebase/firestore";
