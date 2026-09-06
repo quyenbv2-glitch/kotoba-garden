@@ -5,8 +5,7 @@
  */
 
 import { Word, Course } from "../types/kotoba";
-import { JLPT_N4_WORDS } from "./jlpt_n4_n3_words";
-import { KANJI_N5_WORDS } from "./jlpt_n4_n3_words";
+import { JLPT_N4_WORDS, JLPT_N3_WORDS, KANJI_N5_WORDS } from "./jlpt_n4_n3_words";
 
 // ============ COURSES ============
 export const SAMPLE_COURSES: Course[] = [
