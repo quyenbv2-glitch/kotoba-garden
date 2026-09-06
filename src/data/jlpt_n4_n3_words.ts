@@ -4,6 +4,20 @@
  */
 
 import { Word } from "../types/kotoba";
+import { JLPT_N3_EMOTIONS } from "./jlpt_n3_emotions";
+import { JLPT_N3_DAILY } from "./jlpt_n3_daily";
+import { JLPT_N3_BUSINESS } from "./jlpt_n3_business";
+import { JLPT_N3_SOCIETY } from "./jlpt_n3_society";
+import { JLPT_N3_EDUCATION } from "./jlpt_n3_education";
+import { JLPT_N3_TRAVEL } from "./jlpt_n3_travel";
+import { JLPT_N3_HEALTH } from "./jlpt_n3_health";
+import { JLPT_N3_TECHNOLOGY } from "./jlpt_n3_technology";
+import { JLPT_N3_CULTURE } from "./jlpt_n3_culture";
+import { JLPT_N3_GRAMMAR } from "./jlpt_n3_grammar";
+import { JLPT_N3_ADVANCED } from "./jlpt_n3_advanced";
+import { JLPT_N3_KEIGO } from "./jlpt_n3_keigo";
+import { JLPT_N3_IDIOMS } from "./jlpt_n3_idioms";
+import { JLPT_N3_ABSTRACT } from "./jlpt_n3_abstract";
 
 // ============ JLPT N4 VOCABULARY ============
 export const JLPT_N4_WORDS: Word[] = [
