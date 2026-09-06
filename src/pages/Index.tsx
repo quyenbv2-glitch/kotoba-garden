@@ -347,28 +347,62 @@ export default function Index() {
 
           {/* Review Session */}
           {showReview && selectedMode && selectedCourse && (
-            <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-              <ReviewSession
-                mode={selectedMode}
-                words={Array.from(words.values())}
-                progress={progress}
-                uid={user.uid}
-                onComplete={handleReviewComplete}
-                onClose={() => {
+            <div
+              className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) {
                   setShowReview(false);
                   setSelectedMode(null);
-                }}
-              />
+                }
+              }}
+            >
+              <div className="relative w-full max-w-2xl">
+                <button
+                  onClick={() => {
+                    setShowReview(false);
+                    setSelectedMode(null);
+                  }}
+                  className="absolute -top-3 -right-3 z-10 w-10 h-10 rounded-full bg-white shadow-lg text-gray-600 hover:text-red-500 hover:bg-red-50 text-xl font-bold flex items-center justify-center"
+                  aria-label="Đóng"
+                >
+                  ✕
+                </button>
+                <ReviewSession
+                  mode={selectedMode}
+                  words={Array.from(words.values())}
+                  progress={progress}
+                  uid={user.uid}
+                  onComplete={handleReviewComplete}
+                  onClose={() => {
+                    setShowReview(false);
+                    setSelectedMode(null);
+                  }}
+                />
+              </div>
             </div>
           )}
 
           {/* Import Excel */}
           {showImport && (
-            <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-              <ImportExcel
-                uid={user.uid}
-                onSuccess={handleImportSuccess}
-              />
+            <div
+              className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) setShowImport(false);
+              }}
+            >
+              <div className="relative w-full max-w-2xl">
+                <button
+                  onClick={() => setShowImport(false)}
+                  className="absolute -top-3 -right-3 z-10 w-10 h-10 rounded-full bg-white shadow-lg text-gray-600 hover:text-red-500 hover:bg-red-50 text-xl font-bold flex items-center justify-center"
+                  aria-label="Đóng"
+                >
+                  ✕
+                </button>
+                <ImportExcel
+                  uid={user.uid}
+                  onSuccess={handleImportSuccess}
+                />
+              </div>
             </div>
           )}
         </div>

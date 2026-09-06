@@ -167,6 +167,15 @@ function PlantingMode({ words, progress, uid, onComplete, onClose }: ReviewSessi
               </Button>
             </div>
           )}
+
+          {/* Nút thoát */}
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            className="w-full mt-2 text-gray-400 text-sm"
+          >
+            ✕ Thoát
+          </Button>
         </div>
       </CardContent>
     </Card>
@@ -310,6 +319,15 @@ function QuizMode({ words, progress, uid, onComplete, onClose }: ReviewSessionPr
             {currentIndex < words.length - 1 ? "Câu tiếp theo" : "Hoàn thành"}
           </Button>
         )}
+
+        {/* Nút thoát */}
+        <Button
+          variant="ghost"
+          onClick={onClose}
+          className="w-full mt-2 text-gray-400 text-sm"
+        >
+          ✕ Thoát
+        </Button>
       </CardContent>
     </Card>
   );
@@ -447,6 +465,15 @@ function TypingMode({ words, progress, uid, onComplete, onClose }: ReviewSession
             </Button>
           </div>
         )}
+
+        {/* Nút thoát */}
+        <Button
+          variant="ghost"
+          onClick={onClose}
+          className="w-full mt-2 text-gray-400 text-sm"
+        >
+          ✕ Thoát
+        </Button>
       </CardContent>
     </Card>
   );
@@ -741,6 +768,15 @@ function WateringMode({ words, progress, uid, onComplete, onClose }: ReviewSessi
               </Button>
             </div>
           )}
+
+          {/* Nút thoát */}
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            className="w-full mt-2 text-gray-400 text-sm"
+          >
+            ✕ Thoát
+          </Button>
         </div>
       </CardContent>
     </Card>
