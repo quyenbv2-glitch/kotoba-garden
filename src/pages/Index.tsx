@@ -6,10 +6,8 @@ import { PlantGarden } from "../components/PlantGarden";
 import { ReviewSession, ReviewMode } from "../components/ReviewModes";
 import { ImportExcel } from "../components/ImportExcel";
 import { PlantStageBadge } from "../components/ui/plant-stage-badge";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth, db } from "../lib/firebase";
+import { onAuthStateChanged, firebaseSignOut, auth, db } from "../lib/firebase";
 import { getUserProgress, getUserProfile } from "../services/progressService";
-import { doc, getDoc } from "firebase/firestore";
 import { SAMPLE_COURSES, HIRAGANA_WORDS, KATAKANA_WORDS, JLPT_N5_WORDS, getWordsByCourse } from "../data/sampleWords";
 
 export default function Index() {
@@ -172,7 +170,7 @@ export default function Index() {
               </div>
               <Button
                 variant="outline"
-                onClick={() => signOut(auth)}
+                onClick={() => firebaseSignOut(auth)}
                 size="sm"
               >
                 Đăng xuất

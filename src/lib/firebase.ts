@@ -50,6 +50,18 @@ enableIndexedDbPersistence(db).catch((err) => {
   }
 });
 
+// Re-export auth functions
+export {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+  updateProfile,
+  type User,
+} from "firebase/auth";
+
 export { app, auth, db, storage, functions };
 export const isFirebaseConfigured = (): boolean => {
   return (
