@@ -22,19 +22,33 @@ import {
 import { computeSRSReview, isDueForReview } from "../utils/srsCalculator";
 
 /**
+ * Chuyển đổi giá trị ngày tháng từ Firestore (có thể là Timestamp, ISO string, hoặc Date)
+ * về dạng ISO string để dùng trong toàn bộ app.
+ */
+const toIsoString = (value: unknown): string | null => {
+  if (!value) return null;
+  if (value instanceof Timestamp) return value.toDate().toISOString();
+  if (value instanceof Date) return value.toISOString();
+  if (typeof value === "string") return value;
+  if (typeof value === "number") return new Date(value).toISOString();
+  return null;
+};
+
+/**
  * Lấy tất cả tiến trình của người dùng
  */
 export const getUserProgress = async (uid: string): Promise<UserWordProgress[]> => {
   try {
     const progressRef = collection(db, "users", uid, "progress");
     const querySnapshot = await getDocs(progressRef);
-    return querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      lastReviewed: doc.data().lastReviewed
-        ? (doc.data().lastReviewed as Timestamp).toDate().toISOString()
-        : null,
-      nextReview: (doc.data().nextReview as Timestamp).toDate().toISOString(),
-    })) as UserWordProgress[];
+    return querySnapshot.docs.map((d) => {
+      const data = d.data();
+      return {
+        ...data,
+        lastReviewed: toIsoString(data.lastReviewed),
+        nextReview: toIsoString(data.nextReview) ?? new Date().toISOString(),
+      } as UserWordProgress;
+    });
   } catch (error) {
     console.error("Error getting user progress:", error);
     throw error;
@@ -55,10 +69,8 @@ export const getWordProgress = async (
       const data = progressDoc.data();
       return {
         ...data,
-        lastReviewed: data.lastReviewed
-          ? (data.lastReviewed as Timestamp).toDate().toISOString()
-          : null,
-        nextReview: (data.nextReview as Timestamp).toDate().toISOString(),
+        lastReviewed: toIsoString(data.lastReviewed),
+        nextReview: toIsoString(data.nextReview) ?? new Date().toISOString(),
       } as UserWordProgress;
     }
     return null;
@@ -85,12 +97,11 @@ export const updateWordProgress = async (
     if (!existingProgress) {
       const progressDoc = await getDoc(progressRef);
       if (progressDoc.exists()) {
+        const rawData = progressDoc.data();
         existingProgress = {
-          ...progressDoc.data(),
-          lastReviewed: progressDoc.data().lastReviewed
-            ? (progressDoc.data().lastReviewed as Timestamp).toDate().toISOString()
-            : null,
-          nextReview: (progressDoc.data().nextReview as Timestamp).toDate().toISOString(),
+          ...rawData,
+          lastReviewed: toIsoString(rawData.lastReviewed),
+          nextReview: toIsoString(rawData.nextReview) ?? new Date().toISOString(),
         } as UserWordProgress;
       }
     }
@@ -296,14 +307,12 @@ export const subscribeToProgressChanges = (
 ) => {
   const progressRef = collection(db, "users", uid, "progress");
   return onSnapshot(progressRef, (snapshot) => {
-    const progress = snapshot.docs.map((doc) => {
-      const data = doc.data();
+    const progress = snapshot.docs.map((d) => {
+      const data = d.data();
       return {
         ...data,
-        lastReviewed: data.lastReviewed
-          ? (data.lastReviewed as Timestamp).toDate().toISOString()
-          : null,
-        nextReview: (data.nextReview as Timestamp).toDate().toISOString(),
+        lastReviewed: toIsoString(data.lastReviewed),
+        nextReview: toIsoString(data.nextReview) ?? new Date().toISOString(),
       } as UserWordProgress;
     });
     callback(progress);
