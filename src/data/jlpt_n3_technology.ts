@@ -1,0 +1,150 @@
+/**
+ * JLPT N3 - Từ vựng Công nghệ
+ * 120 words covering hardware, software, internet, programming, AI, devices
+ */
+import { Word } from "../types/kotoba";
+
+export const JLPT_N3_TECHNOLOGY: Word[] = [
+  // Phần cứng
+  { id: "n3-tech-1", courseId: "jlpt-n3", kanji: "パソコン", kana: "パソコン", romaji: "pasokon", hanViet: "(ngoại lai)", meaning: "Máy tính cá nhân", textMnemonic: "PC = máy tính cá nhân 💻" },
+  { id: "n3-tech-2", courseId: "jlpt-n3", kanji: "コンピューター", kana: "コンピューター", romaji: "konpyuutaa", hanViet: "(ngoại lai)", meaning: "Máy tính", textMnemonic: "Computer = máy tính 💻" },
+  { id: "n3-tech-3", courseId: "jlpt-n3", kanji: "スマートフォン", kana: "スマートフォン", romaji: "sumaatofon", hanViet: "(ngoại lai)", meaning: "Điện thoại thông minh", textMnemonic: "Smartphone = điện thoại thông minh 📱" },
+  { id: "n3-tech-3a", courseId: "jlpt-n3", kanji: "タブレット", kana: "タブレット", romaji: "taburetto", hanViet: "(ngoại lai)", meaning: "Máy tính bảng", textMnemonic: "Tablet = máy tính bảng 📲" },
+  { id: "n3-tech-4", courseId: "jlpt-n3", kanji: "キーボード", kana: "キーボード", romaji: "kiiboodo", hanViet: "(ngoại lai)", meaning: "Bàn phím", textMnemonic: "Keyboard = bàn phím ⌨️" },
+  { id: "n3-tech-5", courseId: "jlpt-n3", kanji: "マウス", kana: "マウス", romaji: "mausu", hanViet: "(ngoại lai)", meaning: "Chuột", textMnemonic: "Mouse = chuột máy tính 🖱️" },
+  { id: "n3-tech-6", courseId: "jlpt-n3", kanji: "モニター", kana: "モニター", romaji: "monitaa", hanViet: "(ngoại lai)", meaning: "Màn hình", textMnemonic: "Monitor = màn hình hiển thị 🖥️" },
+  { id: "n3-tech-7", courseId: "jlpt-n3", kanji: "プリンター", kana: "プリンター", romaji: "purintaa", hanViet: "(ngoại lai)", meaning: "Máy in", textMnemonic: "Printer = máy in 🖨️" },
+  { id: "n3-tech-8", courseId: "jlpt-n3", kanji: "スピーカー", kana: "スピーカー", romaji: "supiika", hanViet: "(ngoại lai)", meaning: "Loa", textMnemonic: "Speaker = loa phát âm thanh 🔊" },
+  { id: "n3-tech-9", courseId: "jlpt-n3", kanji: "ヘッドフォン", kana: "ヘッドフォン", romaji: "heddo fon", hanViet: "(ngoại lai)", meaning: "Tai nghe", textMnemonic: "Headphone = tai nghe 🎧" },
+  { id: "n3-tech-10", courseId: "jlpt-n3", kanji: "USB", kana: "USB", romaji: "USB", hanViet: "(ngoại lai)", meaning: "USB", textMnemonic: "USB = thiết bị lưu trữ di động 💾" },
+
+  // Phần mềm
+  { id: "n3-tech-11", courseId: "jlpt-n3", kanji: "ソフトウェア", kana: "ソフトウェア", romaji: "sofutowea", hanViet: "(ngoại lai)", meaning: "Phần mềm", textMnemonic: "Software = phần mềm 💿" },
+  { id: "n3-tech-12", courseId: "jlpt-n3", kanji: "ハードウェア", kana: "ハードウェア", romaji: "haadowea", hanViet: "(ngoại lai)", meaning: "Phần cứng", textMnemonic: "Hardware = phần cứng 🔧" },
+  { id: "n3-tech-13", courseId: "jlpt-n3", kanji: "アプリ", kana: "アプリ", romaji: "apuri", hanViet: "(ngoại lai)", meaning: "Ứng dụng", textMnemonic: "App = ứng dụng di động 📲" },
+  { id: "n3-tech-14", courseId: "jlpt-n3", kanji: "プログラム", kana: "プログラム", romaji: "puroguramu", hanViet: "(ngoại lai)", meaning: "Chương trình", textMnemonic: "Program = chương trình máy tính 💻" },
+  { id: "n3-tech-15", courseId: "jlpt-n3", kanji: "オペレーティング", kana: "オペレーティング", romaji: "opereeitingu", hanViet: "(ngoại lai)", meaning: "Hệ điều hành", textMnemonic: "Operating = hệ điều hành ⚙️" },
+  { id: "n3-tech-16", courseId: "jlpt-n3", kanji: "ウィルス", kana: "ウィルス", romaji: "uirusu", hanViet: "(ngoại lai)", meaning: "Virus", textMnemonic: "Virus = virus máy tính 🦠" },
+  { id: "n3-tech-17", courseId: "jlpt-n3", kanji: "バグ", kana: "バグ", romaji: "bagu", hanViet: "(ngoại lai)", meaning: "Lỗi phần mềm", textMnemonic: "Bug = lỗi chương trình 🐛" },
+  { id: "n3-tech-18", courseId: "jlpt-n3", kanji: "アップデート", kana: "アップデート", romaji: "appudeeto", hanViet: "(ngoại lai)", meaning: "Cập nhật", textMnemonic: "Update = cập nhật 🔄" },
+  { id: "n3-tech-19", courseId: "jlpt-n3", kanji: "インストール", kana: "インストール", romaji: "insutooru", hanViet: "(ngoại lai)", meaning: "Cài đặt", textMnemonic: "Install = cài đặt ⬇️" },
+  { id: "n3-tech-20", courseId: "jlpt-n3", kanji: "アンインストール", kana: "アンインストール", romaji: "aninsutooru", hanViet: "(ngoại lai)", meaning: "Gỡ cài đặt", textMnemonic: "Uninstall = gỡ bỏ 🗑️" },
+
+  // Internet & Web
+  { id: "n3-tech-21", courseId: "jlpt-n3", kanji: "インターネット", kana: "インターネット", romaji: "intaaneetto", hanViet: "(ngoại lai)", meaning: "Internet", textMnemonic: "Internet = mạng internet 🌐" },
+  { id: "n3-tech-22", courseId: "jlpt-n3", kanji: "ウェブサイト", kana: "ウェブサイト", romaji: "webusaito", hanViet: "(ngoại lai)", meaning: "Trang web", textMnemonic: "Website = trang web 🌍" },
+  { id: "n3-tech-23", courseId: "jlpt-n3", kanji: "ホームページ", kana: "ホームページ", romaji: "hoomupeeji", hanViet: "(ngoại lai)", meaning: "Trang chủ", textMnemonic: "Homepage = trang chủ 🏠" },
+  { id: "n3-tech-24", courseId: "jlpt-n3", kanji: "URL", kana: "URL", romaji: "URL", hanViet: "(ngoại lai)", meaning: "URL", textMnemonic: "URL = địa chỉ web 🔗" },
+  { id: "n3-tech-25", courseId: "jlpt-n3", kanji: "リンク", kana: "リンク", romaji: "rinku", hanViet: "(ngoại lai)", meaning: "Liên kết", textMnemonic: "Link = liên kết 🔗" },
+  { id: "n3-tech-26", courseId: "jlpt-n3", kanji: "検索", kana: "けんさく", romaji: "kensaku", hanViet: "Kiếm tra", meaning: "Tìm kiếm", textMnemonic: "検索(tìm kiếm) = search 🔍" },
+  { id: "n3-tech-27", courseId: "jlpt-n3", kanji: "ダウンロード", kana: "ダウンロード", romaji: "daunroodo", hanViet: "(ngoại lai)", meaning: "Tải xuống", textMnemonic: "Download = tải xuống ⬇️" },
+  { id: "n3-tech-28", courseId: "jlpt-n3", kanji: "アップロード", kana: "アップロード", romaji: "appuroodo", hanViet: "(ngoại lai)", meaning: "Tải lên", textMnemonic: "Upload = tải lên ⬆️" },
+  { id: "n3-tech-29", courseId: "jlpt-n3", kanji: "メール", kana: "メール", romaji: "meeru", hanViet: "(ngoại lai)", meaning: "Email", textMnemonic: "Mail = thư điện tử 📧" },
+  { id: "n3-tech-30", courseId: "jlpt-n3", kanji: "SNS", kana: "SNS", romaji: "SNS", hanViet: "(ngoại lai)", meaning: "Mạng xã hội", textMnemonic: "SNS = mạng xã hội 📱" },
+
+  // Lập trình
+  { id: "n3-tech-31", courseId: "jlpt-n3", kanji: "プログラミング", kana: "プログラミング", romaji: "puroguramingu", hanViet: "(ngoại lai)", meaning: "Lập trình", textMnemonic: "Programming = lập trình 💻" },
+  { id: "n3-tech-32", courseId: "jlpt-n3", kanji: "コード", kana: "コード", romaji: "koodo", hanViet: "(ngoại lai)", meaning: "Mã nguồn", textMnemonic: "Code = mã lập trình 📝" },
+  { id: "n3-tech-33", courseId: "jlpt-n3", kanji: "データ", kana: "データ", romaji: "deeta", hanViet: "(ngoại lai)", meaning: "Dữ liệu", textMnemonic: "Data = dữ liệu 💾" },
+  { id: "n3-tech-34", courseId: "jlpt-n3", kanji: "データベース", kana: "データベース", romaji: "deetaabeisu", hanViet: "(ngoại lai)", meaning: "Cơ sở dữ liệu", textMnemonic: "Database = cơ sở dữ liệu 🗄️" },
+  { id: "n3-tech-35", courseId: "jlpt-n3", kanji: "サーバー", kana: "サーバー", romaji: "saabaa", hanViet: "(ngoại lai)", meaning: "Máy chủ", textMnemonic: "Server = máy chủ 🖥️" },
+  { id: "n3-tech-36", courseId: "jlpt-n3", kanji: "クラウド", kana: "クラウド", romaji: "kuraudo", hanViet: "(ngoại lai)", meaning: "Điện toán đám mây", textMnemonic: "Cloud = đám mây ☁️" },
+  { id: "n3-tech-37", courseId: "jlpt-n3", kanji: "アルゴリズム", kana: "アルゴリズム", romaji: "arugorizumu", hanViet: "(ngoại lai)", meaning: "Thuật toán", textMnemonic: "Algorithm = thuật toán 📐" },
+  { id: "n3-tech-38", courseId: "jlpt-n3", kanji: "変数", kana: "へんすう", romaji: "hensuu", hanViet: "Biến số", meaning: "Biến số", textMnemonic: "変(thay) + 数(số) = biến số 🔄" },
+  { id: "n3-tech-39", courseId: "jlpt-n3", kanji: "関数", kana: "かんすう", romaji: "kansuu", hanViet: "Hàm số", meaning: "Hàm", textMnemonic: "関(hàm) + 数(số) = hàm số 📈" },
+  { id: "n3-tech-40", courseId: "jlpt-n3", kanji: "条件", kana: "じょうけん", romaji: "jouken", hanViet: "Kiện", meaning: "Điều kiện", textMnemonic: "条(điều) + 件(kiện) = điều kiện ⚙️" },
+
+  // AI & Công nghệ mới
+  { id: "n3-tech-41", courseId: "jlpt-n3", kanji: "AI", kana: "AI", romaji: "AI", hanViet: "(ngoại lai)", meaning: "Trí tuệ nhân tạo", textMnemonic: "AI = Artificial Intelligence 🤖" },
+  { id: "n3-tech-42", courseId: "jlpt-n3", kanji: "人工知能", kana: "じんこうちのう", romaji: "jinkou chinou", hanViet: "Nhân công trí năng", meaning: "Trí tuệ nhân tạo", textMnemonic: "人工(người tạo) + 知能(trí năng) = AI 🤖" },
+  { id: "n3-tech-43", courseId: "jlpt-n3", kanji: "機械学習", kana: "きかいがくしゅう", romaji: "kikai gakushuu", hanViet: "Cơ học tập", meaning: "Học máy", textMnemonic: "機械(máy) + 学習(học) = học máy 🧠" },
+  { id: "n3-tech-44", courseId: "jlpt-n3", kanji: "深層学習", kana: "しんそうがくしゅう", romaji: "shinsou gakushuu", hanViet: "Sâu học tập", meaning: "Học sâu", textMnemonic: "深層(sâu) + 学習(học) = học sâu 🧠" },
+  { id: "n3-tech-45", courseId: "jlpt-n3", kanji: "ロボット", kana: "ロボット", romaji: "robotto", hanViet: "(ngoại lai)", meaning: "Robot", textMnemonic: "Robot = robot 🤖" },
+  { id: "n3-tech-46", courseId: "jlpt-n3", kanji: "自動化", kana: "じどうか", romaji: "jidouka", hanViet: "Tự động hóa", meaning: "Tự động hóa", textMnemonic: "自動(tự động) + 化(hóa) = tự động hóa ⚙️" },
+  { id: "n3-tech-47", courseId: "jlpt-n3", kanji: "IoT", kana: "IoT", romaji: "IoT", hanViet: "(ngoại lai)", meaning: "Internet vạn vật", textMnemonic: "IoT = Internet of Things 🌐" },
+  { id: "n3-tech-48", courseId: "jlpt-n3", kanji: "5G", kana: "5G", romaji: "5G", hanViet: "(ngoại lai)", meaning: "5G", textMnemonic: "5G = mạng thế hệ mới 📶" },
+  { id: "n3-tech-49", courseId: "jlpt-n3", kanji: "VR", kana: "VR", romaji: "VR", hanViet: "(ngoại lai)", meaning: "Thực tế ảo", textMnemonic: "VR = Virtual Reality 🥽" },
+  { id: "n3-tech-50", courseId: "jlpt-n3", kanji: "AR", kana: "AR", romaji: "AR", hanViet: "(ngoại lai)", meaning: "Thực tế tăng cường", textMnemonic: "AR = Augmented Reality 🔍" },
+
+  // An ninh mạng
+  { id: "n3-tech-51", courseId: "jlpt-n3", kanji: "セキュリティ", kana: "セキュリティ", romaji: "sekyuriti", hanViet: "(ngoại lai)", meaning: "Bảo mật", textMnemonic: "Security = bảo mật 🔒" },
+  { id: "n3-tech-52", courseId: "jlpt-n3", kanji: "暗号化", kana: "あんごうか", romaji: "angouka", hanViet: "Mật mã hóa", meaning: "Mã hóa", textMnemonic: "暗号(mật mã) + 化(hóa) = mã hóa 🔐" },
+  { id: "n3-tech-53", courseId: "jlpt-n3", kanji: "パスワード", kana: "パスワード", romaji: "pasuwado", hanViet: "(ngoại lai)", meaning: "Mật khẩu", textMnemonic: "Password = mật khẩu 🔑" },
+  { id: "n3-tech-54", courseId: "jlpt-n3", kanji: "ログイン", kana: "ログイン", romaji: "roguin", hanViet: "(ngoại lai)", meaning: "Đăng nhập", textMnemonic: "Login = đăng nhập 🔐" },
+  { id: "n3-tech-55", courseId: "jlpt-n3", kanji: "ログアウト", kana: "ログアウト", romaji: "rogauto", hanViet: "(ngoại lai)", meaning: "Đăng xuất", textMnemonic: "Logout = đăng xuất 🚪" },
+  { id: "n3-tech-56", courseId: "jlpt-n3", kanji: "ウイルス", kana: "ウイルス", romaji: "uirusu", hanViet: "(ngoại lai)", meaning: "Virus", textMnemonic: "Virus = virus máy tính 🦠" },
+  { id: "n3-tech-57", courseId: "jlpt-n3", kanji: "ファイアウォール", kana: "ファイアウォール", romaji: "faiia wooru", hanViet: "(ngoại lai)", meaning: "Tường lửa", textMnemonic: "Firewall = tường lửa 🔥" },
+  { id: "n3-tech-58", courseId: "jlpt-n3", kanji: "ハッキング", kana: "ハッキング", romaji: "hakkingu", hanViet: "(ngoại lai)", meaning: "Tấn công mạng", textMnemonic: "Hacking = hack bảo mật 🕵️" },
+  { id: "n3-tech-59", courseId: "jlpt-n3", kanji: "フィッシング", kana: "フィッシング", romaji: "fisshingu", hanViet: "(ngoại lai)", meaning: "Lừa đảo trực tuyến", textMnemonic: "Phishing = lừa đảo 🎣" },
+  { id: "n3-tech-60", courseId: "jlpt-n3", kanji: "マルウェア", kana: "マルウェア", romaji: "maruwa", hanViet: "(ngoại lai)", meaning: "Phần mềm độc hại", textMnemonic: "Malware = phần mềm độc hại 🦠" },
+
+  // Thiết bị & Điện tử
+  { id: "n3-tech-61", courseId: "jlpt-n3", kanji: "スマホ", kana: "スマホ", romaji: "sumaho", hanViet: "(ngoại lai)", meaning: "Điện thoại", textMnemonic: "Smartphone = điện thoại thông minh 📱" },
+  { id: "n3-tech-62", courseId: "jlpt-n3", kanji: "スマホケース", kana: "スマホケース", romaji: "sumaho keesu", hanViet: "(ngoại lai)", meaning: "Ốp điện thoại", textMnemonic: "Smartphone case = ốp điện thoại 📱" },
+  { id: "n3-tech-63", courseId: "jlpt-n3", kanji: "充電", kana: "じゅうでん", romaji: "juuden", hanViet: "Trữ điện", meaning: "Sạc pin", textMnemonic: "充(đầy) + 電(điện) = sạc điện 🔌" },
+  { id: "n3-tech-64", courseId: "jlpt-n3", kanji: "バッテリー", kana: "バッテリー", romaji: "batterii", hanViet: "(ngoại lai)", meaning: "Pin", textMnemonic: "Battery = pin 🔋" },
+  { id: "n3-tech-65", courseId: "jlpt-n3", kanji: "ケーブル", kana: "ケーブル", romaji: "keeburu", hanViet: "(ngoại lai)", meaning: "Dây cáp", textMnemonic: "Cable = dây cáp 🔌" },
+  { id: "n3-tech-66", courseId: "jlpt-n3", kanji: "コンセント", kana: "コンセント", romaji: "konsento", hanViet: "(ngoại lai)", meaning: "Ổ cắm điện", textMnemonic: "Convenient = ổ cắm điện 🔌" },
+  { id: "n3-tech-67", courseId: "jlpt-n3", kanji: "電源", kana: "でんげん", romaji: "dengen", hanViet: "Điện nguyên", meaning: "Nguồn điện", textMnemonic: "電(điện) + 源(nguồn) = nguồn điện ⚡" },
+  { id: "n3-tech-68", courseId: "jlpt-n3", kanji: "カメラ", kana: "カメラ", romaji: "kamera", hanViet: "(ngoại lai)", meaning: "Máy ảnh", textMnemonic: "Camera = máy ảnh 📷" },
+  { id: "n3-tech-69", courseId: "jlpt-n3", kanji: "レンズ", kana: "レンズ", romaji: "renzu", hanViet: "(ngoại lai)", meaning: "Ống kính", textMnemonic: "Lens = ống kính 📷" },
+  { id: "n3-tech-70", courseId: "jlpt-n3", kanji: "フラッシュ", kana: "フラッシュ", romaji: "furasshu", hanViet: "(ngoại lai)", meaning: "Đèn flash", textMnemonic: "Flash = đèn chớp 📸" },
+
+  // Mạng & Kết nối
+  { id: "n3-tech-71", courseId: "jlpt-n3", kanji: "Wi-Fi", kana: "Wi-Fi", romaji: "Wi-Fi", hanViet: "(ngoại lai)", meaning: "WiFi", textMnemonic: "WiFi = mạng không dây 📶" },
+  { id: "n3-tech-72", courseId: "jlpt-n3", kanji: "Bluetooth", kana: "Bluetooth", romaji: "Bluetooth", hanViet: "(ngoại lai)", meaning: "Bluetooth", textMnemonic: "Bluetooth = kết nối không dây 🔵" },
+  { id: "n3-tech-73", courseId: "jlpt-n3", kanji: "LAN", kana: "LAN", romaji: "LAN", hanViet: "(ngoại lai)", meaning: "Mạng LAN", textMnemonic: "LAN = Local Area Network 🌐" },
+  { id: "n3-tech-74", courseId: "jlpt-n3", kanji: "ルーター", kana: "ルーター", romaji: "ruutaa", hanViet: "(ngoại lai)", meaning: "Router", textMnemonic: "Router = bộ định tuyến 📡" },
+  { id: "n3-tech-75", courseId: "jlpt-n3", kanji: "モデム", kana: "モデム", romaji: "modemu", hanViet: "(ngoại lai)", meaning: "Modem", textMnemonic: "Modem = modem 📡" },
+  { id: "n3-tech-76", courseId: "jlpt-n3", kanji: "通信", kana: "つうしん", romaji: "tsuushin", hanViet: "Thông tin", meaning: "Truyền thông", textMnemonic: "通(đi qua) + 信(thông tin) = truyền thông 📡" },
+  { id: "n3-tech-77", courseId: "jlpt-n3", kanji: "回線", kana: "かんせん", romaji: "kansen", hanViet: "Hội tuyến", meaning: "Đường truyền", textMnemonic: "回(quay) + 線(dây) = đường truyền 📞" },
+  { id: "n3-tech-78", courseId: "jlpt-n3", kanji: "帯域", kana: "たいいき", romaji: "taiki", hanViet: "Đới vực", meaning: "Băng thông", textMnemonic: "帯(băng) + 域(vực) = băng thông 📶" },
+  { id: "n3-tech-79", courseId: "jlpt-n3", kanji: "プロバイダー", kana: "プロバイダー", romaji: "purobadaa", hanViet: "(ngoại lai)", meaning: "Nhà cung cấp", textMnemonic: "Provider = nhà cung cấp 🏢" },
+  { id: "n3-tech-80", courseId: "jlpt-n3", kanji: "ホスト", kana: "ホスト", romaji: "hosuto", hanViet: "(ngoại lai)", meaning: "Host", textMnemonic: "Host = máy chủ 🖥️" },
+
+  // Công nghệ thông tin
+  { id: "n3-tech-81", courseId: "jlpt-n3", kanji: "IT", kana: "IT", romaji: "IT", hanViet: "(ngoại lai)", meaning: "Công nghệ thông tin", textMnemonic: "IT = Information Technology 💻" },
+  { id: "n3-tech-82", courseId: "jlpt-n3", kanji: "ICT", kana: "ICT", romaji: "ICT", hanViet: "(ngoại lai)", meaning: "Công nghệ thông tin", textMnemonic: "ICT = Information Communication Technology 📡" },
+  { id: "n3-tech-83", courseId: "jlpt-n3", kanji: "システム", kana: "システム", romaji: "shisutemu", hanViet: "(ngoại lai)", meaning: "Hệ thống", textMnemonic: "System = hệ thống ⚙️" },
+  { id: "n3-tech-84", courseId: "jlpt-n3", kanji: "ネットワーク", kana: "ネットワーク", romaji: "nettowaku", hanViet: "(ngoại lai)", meaning: "Mạng", textMnemonic: "Network = mạng máy tính 🌐" },
+  { id: "n3-tech-85", courseId: "jlpt-n3", kanji: "データ", kana: "データ", romaji: "deeta", hanViet: "(ngoại lai)", meaning: "Dữ liệu", textMnemonic: "Data = dữ liệu 💾" },
+  { id: "n3-tech-86", courseId: "jlpt-n3", kanji: "情報", kana: "じょうほう", romaji: "jouhou", hanViet: "Tình báo", meaning: "Thông tin", textMnemonic: "情(tình) + 報(báo) = thông tin 📰" },
+  { id: "n3-tech-87", courseId: "jlpt-n3", kanji: "ファイル", kana: "ファイル", romaji: "fairu", hanViet: "(ngoại lai)", meaning: "Tệp tin", textMnemonic: "File = tệp tin 📄" },
+  { id: "n3-tech-88", courseId: "jlpt-n3", kanji: "フォルダ", kana: "フォルダ", romaji: "foruda", hanViet: "(ngoại lai)", meaning: "Thư mục", textMnemonic: "Folder = thư mục 📁" },
+  { id: "n3-tech-89", courseId: "jlpt-n3", kanji: "保存", kana: "ほぞん", romaji: "hozon", hanViet: "Bảo tồn", meaning: "Lưu trữ", textMnemonic: "保(bảo) + 存(lưu) = lưu trữ 💾" },
+  { id: "n3-tech-90", courseId: "jlpt-n3", kanji: "削除", kana: "さくじょ", romaji: "sakujyo", hanViet: "Xóa bỏ", meaning: "Xóa", textMnemonic: "削(xóa) + 除(bỏ) = xóa bỏ 🗑️" },
+
+  // Thiết bị số
+  { id: "n3-tech-91", courseId: "jlpt-n3", kanji: "スマホ", kana: "スマホ", romaji: "sumaho", hanViet: "(ngoại lai)", meaning: "Điện thoại thông minh", textMnemonic: "Smartphone = điện thoại thông minh 📱" },
+  { id: "n3-tech-92", courseId: "jlpt-n3", kanji: "タブレット", kana: "タブレット", romaji: "taburetto", hanViet: "(ngoại lai)", meaning: "Máy tính bảng", textMnemonic: "Tablet = máy tính bảng 📲" },
+  { id: "n3-tech-93", courseId: "jlpt-n3", kanji: "ノートPC", kana: "ノートPC", romaji: "nooto PC", hanViet: "(ngoại lai)", meaning: "Laptop", textMnemonic: "Note PC = laptop 💻" },
+  { id: "n3-tech-94", courseId: "jlpt-n3", kanji: "デスクトップ", kana: "デスクトップ", romaji: "desukutoppu", hanViet: "(ngoại lai)", meaning: "Máy tính để bàn", textMnemonic: "Desktop = máy tính để bàn 🖥️" },
+  { id: "n3-tech-95", courseId: "jlpt-n3", kanji: "スキャナー", kana: "スキャナー", romaji: "sukyanaa", hanViet: "(ngoại lai)", meaning: "Máy quét", textMnemonic: "Scanner = máy quét 📄" },
+  { id: "n3-tech-96", courseId: "jlpt-n3", kanji: "プロジェクター", kana: "プロジェクター", romaji: "purojekutaa", hanViet: "(ngoại lai)", meaning: "Máy chiếu", textMnemonic: "Projector = máy chiếu 📽️" },
+  { id: "n3-tech-97", courseId: "jlpt-n3", kanji: "スマートウォッチ", kana: "スマートウォッチ", romaji: "sumaatowotchi", hanViet: "(ngoại lai)", meaning: "Đồng hồ thông minh", textMnemonic: "Smartwatch = đồng hồ thông minh ⌚" },
+  { id: "n3-tech-98", courseId: "jlpt-n3", kanji: "イヤホン", kana: "イヤホン", romaji: "iyahon", hanViet: "(ngoại lai)", meaning: "Tai nghe không dây", textMnemonic: "Earphone = tai nghe 🎧" },
+  { id: "n3-tech-99", courseId: "jlpt-n3", kanji: "スピーカー", kana: "スピーカー", romaji: "supiika", hanViet: "(ngoại lai)", meaning: "Loa Bluetooth", textMnemonic: "Speaker = loa không dây 🔊" },
+  { id: "n3-tech-100", courseId: "jlpt-n3", kanji: "ハードディスク", kana: "ハードディスク", romaji: "haado disuku", hanViet: "(ngoại lai)", meaning: "Ổ cứng", textMnemonic: "Hard disk = ổ cứng 💾" },
+
+  // Mở rộng
+  { id: "n3-tech-101", courseId: "jlpt-n3", kanji: "クラウドサービス", kana: "クラウドサービス", romaji: "kuraudo saabisu", hanViet: "(ngoại lai)", meaning: "Dịch vụ đám mây", textMnemonic: "Cloud service = dịch vụ đám mây ☁️" },
+  { id: "n3-tech-102", courseId: "jlpt-n3", kanji: "オンライン", kana: "オンライン", romaji: "onrain", hanViet: "(ngoại lai)", meaning: "Trực tuyến", textMnemonic: "Online = trực tuyến 🌐" },
+  { id: "n3-tech-103", courseId: "jlpt-n3", kanji: "オフライン", kana: "オフライン", romaji: "ofurain", hanViet: "(ngoại lai)", meaning: "Ngoại tuyến", textMnemonic: "Offline = ngoại tuyến 📴" },
+  { id: "n3-tech-104", courseId: "jlpt-n3", kanji: "アプリストア", kana: "アプリストア", romaji: "apuri sutoa", hanViet: "(ngoại lai)", meaning: "Cửa hàng ứng dụng", textMnemonic: "App store = cửa hàng ứng dụng 📲" },
+  { id: "n3-tech-105", courseId: "jlpt-n3", kanji: "オペレーティングシステム", kana: "オペレーティングシステム", romaji: "opereeitingu shisutemu", hanViet: "(ngoại lai)", meaning: "Hệ điều hành", textMnemonic: "Operating system = hệ điều hành ⚙️" },
+  { id: "n3-tech-106", courseId: "jlpt-n3", kanji: "ユーザー", kana: "ユーザー", romaji: "yuuzaa", hanViet: "(ngoại lai)", meaning: "Người dùng", textMnemonic: "User = người dùng 👤" },
+  { id: "n3-tech-107", courseId: "jlpt-n3", kanji: "管理者", kana: "かんりしゃ", romaji: "kanrishya", hanViet: "Quản lý giả", meaning: "Quản trị viên", textMnemonic: "管理(quản lý) + 者(người) = quản trị viên 👨‍💻" },
+  { id: "n3-tech-108", courseId: "jlpt-n3", kanji: "パスワード", kana: "パスワード", romaji: "pasuwado", hanViet: "(ngoại lai)", meaning: "Mật khẩu", textMnemonic: "Password = mật khẩu 🔑" },
+  { id: "n3-tech-109", courseId: "jlpt-n3", kanji: "アカウント", kana: "アカウント", romaji: "akaunto", hanViet: "(ngoại lai)", meaning: "Tài khoản", textMnemonic: "Account = tài khoản 📝" },
+  { id: "n3-tech-110", courseId: "jlpt-n3", kanji: "設定", kana: "せってい", romaji: "settei", hanViet: "Thiết đặt", meaning: "Cài đặt", textMnemonic: "設(thiết) + 定(đặt) = cài đặt ⚙️" },
+  { id: "n3-tech-111", courseId: "jlpt-n3", kanji: "更新", kana: "こうしん", romaji: "koushin", hanViet: "Cập nhật", meaning: "Cập nhật", textMnemonic: "更(mới) + 新(mới) = cập nhật 🔄" },
+  { id: "n3-tech-112", courseId: "jlpt-n3", kanji: "バージョン", kana: "バージョン", romaji: "baajon", hanViet: "(ngoại lai)", meaning: "Phiên bản", textMnemonic: "Version = phiên bản 📦" },
+  { id: "n3-tech-113", courseId: "jlpt-n3", kanji: "開発", kana: "かいはつ", romaji: "kaihatsu", hanViet: "Phát triển", meaning: "Phát triển", textMnemonic: "開(mở) + 発(triển) = phát triển 🚀" },
+  { id: "n3-tech-114", courseId: "jlpt-n3", kanji: "設計", kana: "せっけい", romaji: "sekkei", hanViet: "Thiết kế", meaning: "Thiết kế", textMnemonic: "設(thiết) + 計(kế) = thiết kế 📐" },
+  { id: "n3-tech-115", courseId: "jlpt-n3", kanji: "実装", kana: "じっそう", romaji: "jissou", hanViet: "Thực hiện", meaning: "Triển khai", textMnemonic: "実(thực) + 装(giả) = thực hiện triển khai ✅" },
+  { id: "n3-tech-116", courseId: "jlpt-n3", kanji: "テスト", kana: "テスト", romaji: "tesuto", hanViet: "(ngoại lai)", meaning: "Kiểm thử", textMnemonic: "Test = kiểm thử 🧪" },
+  { id: "n3-tech-117", courseId: "jlpt-n3", kanji: "デバッグ", kana: "デバッグ", romaji: "debaggu", hanViet: "(ngoại lai)", meaning: "Gỡ lỗi", textMnemonic: "Debug = gỡ lỗi 🐛" },
+  { id: "n3-tech-118", courseId: "jlpt-n3", kanji: "リリース", kana: "リリース", romaji: "ririisu", hanViet: "(ngoại lai)", meaning: "Phát hành", textMnemonic: "Release = phát hành 🚀" },
+  { id: "n3-tech-119", courseId: "jlpt-n3", kanji: "アップデート", kana: "アップデート", romaji: "appudeeto", hanViet: "(ngoại lai)", meaning: "Cập nhật", textMnemonic: "Update = cập nhật 🔄" },
+  { id: "n3-tech-120", courseId: "jlpt-n3", kanji: "ダウン", kana: "ダウン", romaji: "daun", hanViet: "(ngoại lai)", meaning: "Tắt/Mất kết nối", textMnemonic: "Down = tắt, mất kết nối 📴" },
+];
