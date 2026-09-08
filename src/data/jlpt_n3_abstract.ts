@@ -20,7 +20,7 @@ export const JLPT_N3_ABSTRACT: Word[] = [
   // Khái niệm đạo đức
   { id: "n3-abs-11", courseId: "jlpt-n3", kanji: "正義", kana: "せいぎ", romaji: "seigi", hanViet: "Chính nghĩa", meaning: "Công lý", textMnemonic: "正義 = công lý / lẽ phải ⚖️" },
   { id: "n3-abs-12", courseId: "jlpt-n3", kanji: "自由", kana: "じゆう", romaji: "jiyuu", hanViet: "Tự do", meaning: "Tự do", textMnemonic: "自由 = tự do / tự trị 🕊️" },
-  { id: "n3-abs-13", courseId: "jlpt-n3", kanji: "平和", kana: "へiwa", romaji: "heiwa", hanViet: "Hòa bình", meaning: "Hòa bình", textMnemonic: "平和 = hòa bình / yên bình ☮️" },
+  { id: "n3-abs-13", courseId: "jlpt-n3", kanji: "平和", kana: "へいわ", romaji: "heiwa", hanViet: "Hòa bình", meaning: "Hòa bình", textMnemonic: "平和 = hòa bình / yên bình ☮️" },
   { id: "n3-abs-14", courseId: "jlpt-n3", kanji: "幸福", kana: "こうふく", romaji: "koufuku", hanViet: "Hạnh phúc", meaning: "Hạnh phúc", textMnemonic: "幸福 = hạnh phúc / may mắn 😊" },
   { id: "n3-abs-15", courseId: "jlpt-n3", kanji: "悲しみ", kana: "かなしみ", romaji: "kanashimi", hanViet: "Bi", meaning: "Nỗi buồn", textMnemonic: "悲しみ = nỗi buồn / sầu thương 😢" },
   { id: "n3-abs-16", courseId: "jlpt-n3", kanji: "喜び", kana: "よろこび", romaji: "yorokobi", hanViet: "Hỉ", meaning: "Niềm vui", textMnemonic: "喜び = niềm vui / hân phúc 🎉" },
@@ -65,7 +65,7 @@ export const JLPT_N3_ABSTRACT: Word[] = [
   { id: "n3-abs-47", courseId: "jlpt-n3", kanji: "意味", kana: "いみ", romaji: "imi", hanViet: "Ý nghĩa", meaning: "Ý nghĩa", textMnemonic: "意味 = ý nghĩa / nghĩa của từ 📖" },
   { id: "n3-abs-48", courseId: "jlpt-n3", kanji: "理由", kana: "りゆう", romaji: "riyuu", hanViet: "Lý do", meaning: "Lý do", textMnemonic: "理由 = lý do / nguyên nhân ❓" },
   { id: "n3-abs-49", courseId: "jlpt-n3", kanji: "原因", kana: "げんいん", romaji: "genin", hanViet: "Nguyên nhân", meaning: "Nguyên nhân", textMnemonic: "原因 = nguyên nhân / gốc rễ 🔍" },
-  { id: "n3-abs-50", courseId: "jlpt-n3", kanji: "結果", kana: "けっか", romaji: "kekka", romaji: "kết quả", meaning: "Kết quả", textMnemonic: "結果 = kết quả / đầu ra 📊" },
+  { id: "n3-abs-50", courseId: "jlpt-n3", kanji: "結果", kana: "けっか", romaji: "kekka", hanViet: "Kết quả", meaning: "Kết quả", textMnemonic: "結果 = kết quả / đầu ra 📊" },
   { id: "n3-abs-51", courseId: "jlpt-n3", kanji: "影響", kana: "えいきょう", romaji: "eikyou", hanViet: "Ảnh hưởng", meaning: "Ảnh hưởng", textMnemonic: "影響 = ảnh hưởng / tác động 💫" },
   { id: "n3-abs-52", courseId: "jlpt-n3", kanji: "効果", kana: "こうか", romaji: "kouka", hanViet: "Hiệu quả", meaning: "Hiệu quả", textMnemonic: "効果 = hiệu quả / công dụng ✅" },
   { id: "n3-abs-53", courseId: "jlpt-n3", kanji: "目的", kana: "もくてき", romaji: "mokuteki", hanViet: "Mục đích", meaning: "Mục đích", textMnemonic: "目的 = mục đích / ý đồ 🎯" },
