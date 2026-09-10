@@ -112,8 +112,24 @@ export const JLPT_N3_WORDS: Word[] = [
   { id: "n3-27", courseId: "jlpt-n3", kanji: "必ず", kana: "かならず", romaji: "kanarazu", hanViet: "Tất nhiên", meaning: "Nhất định", textMnemonic: "必 (tất) + ず (chắc chắn) = chắc chắn sẽ xảy ra ✅" },
   { id: "n3-28", courseId: "jlpt-n3", kanji: "全然", kana: "ぜんぜん", romaji: "zenzen", hanViet: "Toàn nhiên", meaning: "Hoàn toàn không", textMnemonic: "全 (toàn) + 然 (vậy) = hoàn toàn không phải ❌" },
   { id: "n3-29", courseId: "jlpt-n3", kanji: "特に", kana: "とくに", romaji: "tokuni", hanViet: "Đặc biệt", meaning: "Đặc biệt", textMnemonic: "特 (đặc) + に (thì) = rất đặc biệt ⭐" },
-  { id: "n3-30", courseId: "jlpt-n3", kanji: "例えば", kana: "たとえば", romaji: "tatoeba", hanViet: "Như lệ", meaning: "Ví dụ", textMnemonic: "例 (ví dụ) + えば = ví dụ như 📋" },
-];
+    { id: "n3-30", courseId: "jlpt-n3", kanji: "例えば", kana: "たとえば", romaji: "tatoeba", hanViet: "Như lệ", meaning: "Ví dụ", textMnemonic: "例 (ví dụ) + えば = ví dụ như 📋" },
+  
+    // === SPREAD ALL IMPORTED CATEGORY ARRAYS ===
+    ...JLPT_N3_EMOTIONS,
+    ...JLPT_N3_DAILY,
+    ...JLPT_N3_BUSINESS,
+    ...JLPT_N3_SOCIETY,
+    ...JLPT_N3_EDUCATION,
+    ...JLPT_N3_TRAVEL,
+    ...JLPT_N3_HEALTH,
+    ...JLPT_N3_TECHNOLOGY,
+    ...JLPT_N3_CULTURE,
+    ...JLPT_N3_GRAMMAR,
+    ...JLPT_N3_ADVANCED,
+    ...JLPT_N3_KEIGO,
+    ...JLPT_N3_IDIOMS,
+    ...JLPT_N3_ABSTRACT,
+  ];
 
 // ============ KANJI N5 ============
 export const KANJI_N5_WORDS: Word[] = [
