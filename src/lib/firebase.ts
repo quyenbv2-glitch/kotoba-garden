@@ -12,37 +12,52 @@ import { getFunctions, Functions } from "firebase/functions";
 
 // Firebase configuration - thay thế bằng config của bạn
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "YOUR_API_KEY",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "YOUR_AUTH_DOMAIN",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "YOUR_PROJECT_ID",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "YOUR_STORAGE_BUCKET",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "YOUR_MESSAGING_SENDER_ID",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "YOUR_APP_ID",
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "YOUR_MEASUREMENT_ID",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "",
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "",
 };
 
-// Initialize Firebase App (tránh khởi tạo lại nếu đã tồn tại)
-let app: FirebaseApp;
-let auth: Auth;
-let db: Firestore;
-let storage: FirebaseStorage;
-let functions: Functions;
+// Kiểm tra xem Firebase đã được cấu hình đầy đủ chưa
+export const isFirebaseConfigured = (): boolean => {
+  // Firebase Web API keys thường bắt đầu bằng "AIza" và có độ dài khoảng 39 ký tự
+  const apiKeyValid =
+    !!firebaseConfig.apiKey &&
+    firebaseConfig.apiKey !== "YOUR_API_KEY" &&
+    firebaseConfig.apiKey.startsWith("AIza") &&
+    firebaseConfig.apiKey.length >= 30;
 
-// Kiểm tra xem Firebase đã được khởi tạo chưa
-if (!getApps().length) {
-  app = initializeApp(firebaseConfig);
-} else {
-  app = getApps()[0];
+  return (
+    apiKeyValid &&
+    !!firebaseConfig.projectId &&
+    firebaseConfig.projectId !== "YOUR_PROJECT_ID" &&
+    !!firebaseConfig.authDomain &&
+    !!firebaseConfig.appId
+  );
+};
+
+// Chỉ khởi tạo Firebase khi có config hợp lệ
+let app: FirebaseApp | null = null;
+let auth: Auth | null = null;
+let db: Firestore | null = null;
+let storage: FirebaseStorage | null = null;
+let functions: Functions | null = null;
+
+if (isFirebaseConfigured()) {
+  if (!getApps().length) {
+    app = initializeApp(firebaseConfig);
+  } else {
+    app = getApps()[0];
+  }
+
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
+  functions = getFunctions(app);
 }
-
-// Initialize services
-auth = getAuth(app);
-db = getFirestore(app);
-storage = getStorage(app);
-functions = getFunctions(app);
-
-// Lưu ý: Firebase v9+ đã bật offline persistence mặc định thông qua cache.
-// enableIndexedDbPersistence() đã deprecated; không cần gọi thủ công.
 
 // Re-export auth functions
 export {
@@ -78,9 +93,3 @@ export {
 } from "firebase/firestore";
 
 export { app, auth, db, storage, functions };
-export const isFirebaseConfigured = (): boolean => {
-  return (
-    firebaseConfig.apiKey !== "YOUR_API_KEY" &&
-    firebaseConfig.projectId !== "YOUR_PROJECT_ID"
-  );
-};

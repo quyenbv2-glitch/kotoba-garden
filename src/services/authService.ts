@@ -18,6 +18,7 @@ import {
   updateDoc,
   auth,
   db,
+  isFirebaseConfigured,
 } from "../lib/firebase";
 import type { User } from "firebase/auth";
 
@@ -27,6 +28,17 @@ import type { User } from "firebase/auth";
 const googleProvider = new GoogleAuthProvider();
 
 /**
+ * Kiểm tra xem Firebase đã được cấu hình chưa
+ */
+const ensureFirebaseConfigured = (): void => {
+  if (!isFirebaseConfigured()) {
+    throw new Error(
+      "Firebase chưa được cấu hình. Vui lòng tạo file .env với các biến VITE_FIREBASE_* từ Firebase Console."
+    );
+  }
+};
+
+/**
  * Đăng ký người dùng mới với email/password
  */
 export const registerWithEmail = async (
@@ -34,8 +46,9 @@ export const registerWithEmail = async (
   password: string,
   displayName: string
 ): Promise<{ uid: string; displayName: string }> => {
+  ensureFirebaseConfigured();
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(auth!, email, password);
     const { user } = userCredential;
 
     // Cập nhật displayName
@@ -54,7 +67,7 @@ export const registerWithEmail = async (
       createdCoursesCount: 0,
     };
 
-    await setDoc(doc(db, "users", user.uid), userProfile);
+    await setDoc(doc(db!, "users", user.uid), userProfile);
 
     return { uid: user.uid, displayName: user.displayName || "" };
   } catch (error: any) {
@@ -69,8 +82,9 @@ export const loginWithEmail = async (
   email: string,
   password: string
 ): Promise<{ uid: string; displayName: string }> => {
+  ensureFirebaseConfigured();
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(auth!, email, password);
     const { user } = userCredential;
 
     // Cập nhật last active date
@@ -86,12 +100,13 @@ export const loginWithEmail = async (
  * Đăng nhập với Google
  */
 export const loginWithGoogle = async (): Promise<{ uid: string; displayName: string }> => {
+  ensureFirebaseConfigured();
   try {
-    const result = await signInWithPopup(auth, googleProvider);
+    const result = await signInWithPopup(auth!, googleProvider);
     const { user } = result;
 
     // Kiểm tra xem user đã tồn tại trong Firestore chưa
-    const userDoc = await getDoc(doc(db, "users", user.uid));
+    const userDoc = await getDoc(doc(db!, "users", user.uid));
     if (!userDoc.exists()) {
       // Tạo profile mới nếu chưa tồn tại
       const userProfile: UserProfile = {
@@ -106,7 +121,7 @@ export const loginWithGoogle = async (): Promise<{ uid: string; displayName: str
         createdCoursesCount: 0,
       };
 
-      await setDoc(doc(db, "users", user.uid), userProfile);
+      await setDoc(doc(db!, "users", user.uid), userProfile);
     } else {
       // Cập nhật last active date
       await updateUserLastActive(user.uid);
@@ -122,8 +137,9 @@ export const loginWithGoogle = async (): Promise<{ uid: string; displayName: str
  * Đăng xuất
  */
 export const logout = async (): Promise<void> => {
+  ensureFirebaseConfigured();
   try {
-    await firebaseSignOut(auth);
+    await firebaseSignOut(auth!);
   } catch (error: any) {
     throw new Error(error.message || "Đăng xuất thất bại");
   }
@@ -133,6 +149,10 @@ export const logout = async (): Promise<void> => {
  * Lắng nghe trạng thái auth
  */
 export const onAuthStateChange = (callback: (user: User | null) => void) => {
+  if (!isFirebaseConfigured() || !auth) {
+    // Trả về một unsubscribe function noop
+    return () => {};
+  }
   return onAuthStateChanged(auth, callback);
 };
 
@@ -140,6 +160,7 @@ export const onAuthStateChange = (callback: (user: User | null) => void) => {
  * Cập nhật last active date của người dùng
  */
 export const updateUserLastActive = async (uid: string): Promise<void> => {
+  if (!isFirebaseConfigured() || !db) return;
   try {
     const userRef = doc(db, "users", uid);
     await updateDoc(userRef, {
@@ -154,6 +175,7 @@ export const updateUserLastActive = async (uid: string): Promise<void> => {
  * Cập nhật streak count
  */
 export const updateStreakCount = async (uid: string, streakCount: number): Promise<void> => {
+  if (!isFirebaseConfigured() || !db) return;
   try {
     const userRef = doc(db, "users", uid);
     await updateDoc(userRef, { streakCount });
@@ -166,6 +188,7 @@ export const updateStreakCount = async (uid: string, streakCount: number): Promi
  * Cập nhật total XP
  */
 export const updateTotalXp = async (uid: string, totalXp: number): Promise<void> => {
+  if (!isFirebaseConfigured() || !db) return;
   try {
     const userRef = doc(db, "users", uid);
     await updateDoc(userRef, { totalXp });
@@ -178,6 +201,7 @@ export const updateTotalXp = async (uid: string, totalXp: number): Promise<void>
  * Lấy profile người dùng
  */
 export const getUserProfile = async (uid: string): Promise<UserProfile | null> => {
+  if (!isFirebaseConfigured() || !db) return null;
   try {
     const userDoc = await getDoc(doc(db, "users", uid));
     if (userDoc.exists()) {
@@ -197,6 +221,7 @@ export const updateUserProfile = async (
   uid: string,
   updates: Partial<UserProfile>
 ): Promise<void> => {
+  if (!isFirebaseConfigured() || !db) return;
   try {
     const userRef = doc(db, "users", uid);
     await updateDoc(userRef, updates);

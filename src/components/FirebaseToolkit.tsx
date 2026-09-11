@@ -11,6 +11,10 @@ export function FirebaseToolkit() {
     setIsPinging(true);
     setPingResult("");
     try {
+      if (!isFirebaseConfigured() || !auth) {
+        setPingResult("⚠️ Firebase chưa được cấu hình.");
+        return;
+      }
       const current = auth.currentUser;
       if (current) {
         setPingResult(`✅ Auth OK — uid: ${current.uid} • email: ${current.email ?? "(no email)"}`);
@@ -28,6 +32,10 @@ export function FirebaseToolkit() {
     setIsPinging(true);
     setPingResult("");
     try {
+      if (!isFirebaseConfigured() || !db) {
+        setPingResult("⚠️ Firebase chưa được cấu hình.");
+        return;
+      }
       // Thử truy cập settings của Firestore (không gọi network nếu offline)
       const appName = db.app.name;
       setPingResult(`✅ Firestore OK — app: ${appName}`);
@@ -39,6 +47,10 @@ export function FirebaseToolkit() {
   };
 
   const handleCopyUid = async () => {
+    if (!isFirebaseConfigured() || !auth) {
+      setPingResult("⚠️ Firebase chưa được cấu hình.");
+      return;
+    }
     const uid = auth.currentUser?.uid;
     if (!uid) return;
     try {

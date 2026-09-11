@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Alert, AlertDescription } from "../components/ui/alert";
 import { AuthForm } from "../components/AuthForm";
 import { PlantGarden } from "../components/PlantGarden";
 import { ReviewSession, ReviewMode } from "../components/ReviewModes";
@@ -9,7 +10,7 @@ import { Statistics } from "../components/Statistics";
 import { Leaderboard } from "../components/Leaderboard";
 import { FirebaseToolkit } from "../components/FirebaseToolkit";
 import { PlantStageBadge } from "../components/ui/plant-stage-badge";
-import { onAuthStateChanged, firebaseSignOut, auth, db } from "../lib/firebase";
+import { onAuthStateChanged, firebaseSignOut, auth, db, isFirebaseConfigured } from "../lib/firebase";
 import { getUserProgress } from "../services/progressService";
 import { getUserProfile } from "../services/authService";
 import { SAMPLE_COURSES, HIRAGANA_WORDS, KATAKANA_WORDS, JLPT_N5_WORDS, getWordsByCourse } from "../data/sampleWords";
@@ -29,7 +30,14 @@ export default function Index() {
 
   // Auth state
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (userAuth) => {
+    const activeAuth = auth;
+    const configured = isFirebaseConfigured() && !!activeAuth;
+    if (!configured) {
+      setLoading(false);
+      return;
+    }
+
+    const unsubscribe = onAuthStateChanged(activeAuth, async (userAuth) => {
       if (userAuth) {
         setUser(userAuth);
         try {
@@ -133,16 +141,23 @@ export default function Index() {
   }
 
   if (!user) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="max-w-md mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <AuthForm onSuccess={(userData) => {
-            // This will be handled by auth state change
-          }} />
+      return (
+        <div className="min-h-screen bg-gray-50">
+          <div className="max-w-md mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            {!isFirebaseConfigured() && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertDescription>
+                  Firebase chưa được cấu hình. Vui lòng thêm các biến <code className="bg-muted/10 px-1 rounded">VITE_FIREBASE_*</code> từ Firebase Console vào file <code className="bg-muted/10 px-1 rounded">.env</code>, sau đó khởi động lại ứng dụng.
+                </AlertDescription>
+              </Alert>
+            )}
+            <AuthForm onSuccess={(userData) => {
+              // This will be handled by auth state change
+            }} />
+          </div>
         </div>
-      </div>
-    );
-  }
+      );
+    }
 
   return (
     <div className="min-h-screen bg-gray-50">

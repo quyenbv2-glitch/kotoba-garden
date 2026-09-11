@@ -6,6 +6,7 @@ import { Label } from "./ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Alert, AlertDescription } from "./ui/alert";
 import { registerWithEmail, loginWithEmail, loginWithGoogle } from "../services/authService";
+import { isFirebaseConfigured } from "../lib/firebase";
 
 interface AuthFormProps {
   onSuccess: (user: { uid: string; displayName: string }) => void;
@@ -18,6 +19,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const firebaseConfigured = isFirebaseConfigured();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,6 +82,16 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {!firebaseConfigured && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>
+              Firebase chưa được cấu hình. Vui lòng thêm các biến{" "}
+              <code className="bg-muted/10 px-1 rounded">VITE_FIREBASE_*</code> từ Firebase Console vào file{" "}
+              <code className="bg-muted/10 px-1 rounded">.env</code>, sau đó khởi động lại ứng dụng.
+            </AlertDescription>
+          </Alert>
+        )}
+
         {error && (
           <Alert variant="destructive" className="mb-4">
             <AlertDescription>{error}</AlertDescription>
@@ -116,7 +128,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
                   required
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full" disabled={loading || !firebaseConfigured}>
                 {loading ? "Đang đăng nhập..." : "Đăng nhập"}
               </Button>
             </form>
@@ -130,10 +142,10 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
               </div>
             </div>
 
-            <Button variant="outline" onClick={handleGoogleLogin} disabled={loading} className="w-full">
+            <Button variant="outline" onClick={handleGoogleLogin} disabled={loading || !firebaseConfigured} className="w-full">
               <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                 <path
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-4.74 3.28-8.09z"
                   fill="#4285F4"
                 />
                 <path
@@ -189,7 +201,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
                   minLength={6}
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full" disabled={loading || !firebaseConfigured}>
                 {loading ? "Đang đăng ký..." : "Đăng ký"}
               </Button>
             </form>

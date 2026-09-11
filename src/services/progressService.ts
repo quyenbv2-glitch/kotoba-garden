@@ -4,7 +4,7 @@
  */
 
 import { UserWordProgress, Word, Course, SRSResult } from "../types/kotoba";
-import { db } from "../lib/firebase";
+import { db, isFirebaseConfigured } from "../lib/firebase";
 import {
   doc,
   collection,
@@ -20,6 +20,15 @@ import {
   Timestamp,
 } from "../lib/firebase";
 import { computeSRSReview, isDueForReview } from "../utils/srsCalculator";
+
+/** Helper: throw error nếu Firebase chưa được cấu hình */
+const ensureFirebaseConfigured = (): void => {
+  if (!isFirebaseConfigured()) {
+    throw new Error(
+      "Firebase chưa được cấu hình. Vui lòng thêm các biến VITE_FIREBASE_* từ Firebase Console vào file .env."
+    );
+  }
+};
 
 /**
  * Chuyển đổi giá trị ngày tháng từ Firestore (có thể là Timestamp, ISO string, hoặc Date)
