@@ -62,6 +62,10 @@ export function FirebaseToolkit() {
   };
 
   const handleSignOut = async () => {
+    if (!isFirebaseConfigured() || !auth) {
+      setPingResult("⚠️ Firebase chưa được cấu hình.");
+      return;
+    }
     try {
       await firebaseSignOut(auth);
       setPingResult("👋 Đã đăng xuất");
@@ -131,7 +135,7 @@ export function FirebaseToolkit() {
             <h3 className="font-bold text-gray-800">Sao chép UID</h3>
           </div>
           <p className="text-sm text-gray-500 mb-3">Copy UID hiện tại ra clipboard để tra cứu Firestore.</p>
-          <Button onClick={handleCopyUid} size="sm" variant="outline" disabled={!auth.currentUser}>
+          <Button onClick={handleCopyUid} size="sm" variant="outline" disabled={!auth?.currentUser}>
             Copy UID
           </Button>
         </div>

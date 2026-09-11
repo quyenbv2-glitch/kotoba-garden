@@ -71,7 +71,26 @@ export const registerWithEmail = async (
 
     return { uid: user.uid, displayName: user.displayName || "" };
   } catch (error: any) {
-    throw new Error(error.message || "Đăng ký thất bại");
+    const code = error?.code || "";
+    const message = error?.message || "Đăng ký thất bại";
+
+    if (code === "auth/invalid-api-key" || code === "auth/network-request-failed") {
+      throw new Error(
+        "Lỗi cấu hình Firebase: API key không hợp lệ hoặc không thể kết nối mạng. " +
+        "Vui lòng kiểm tra biến VITE_FIREBASE_API_KEY trong file .env và đảm bảo kết nối Internet."
+      );
+    }
+    if (code === "auth/email-already-in-use") {
+      throw new Error("Email đã được sử dụng. Vui lòng dùng email khác hoặc đăng nhập.");
+    }
+    if (code === "auth/weak-password") {
+      throw new Error("Mật khẩu quá yếu. Vui lòng đặt mật khẩu mạnh hơn.");
+    }
+    if (code === "auth/operation-not-allowed") {
+      throw new Error("Đăng ký tài khoản qua email/password chưa được bật trong Firebase Console.");
+    }
+
+    throw new Error(message || "Đăng ký thất bại");
   }
 };
 
@@ -92,7 +111,30 @@ export const loginWithEmail = async (
 
     return { uid: user.uid, displayName: user.displayName || "" };
   } catch (error: any) {
-    throw new Error(error.message || "Đăng nhập thất bại");
+    const code = error?.code || "";
+    const message = error?.message || "Đăng nhập thất bại";
+
+    // Map Firebase Auth error codes to friendly messages
+    if (code === "auth/invalid-api-key" || code === "auth/network-request-failed") {
+      throw new Error(
+        "Lỗi cấu hình Firebase: API key không hợp lệ hoặc không thể kết nối mạng. " +
+        "Vui lòng kiểm tra biến VITE_FIREBASE_API_KEY trong file .env và đảm bảo kết nối Internet."
+      );
+    }
+    if (code === "auth/user-not-found" || code === "auth/wrong-password") {
+      throw new Error("Email hoặc mật khẩu không đúng. Vui lòng kiểm tra lại.");
+    }
+    if (code === "auth/too-many-requests") {
+      throw new Error("Quá nhiều lần đăng nhập. Vui lòng thử lại sau vài phút.");
+    }
+    if (code === "auth/invalid-email") {
+      throw new Error("Định dạng email không hợp lệ.");
+    }
+    if (code === "auth/user-disabled") {
+      throw new Error("Tài khoản đã bị vô hiệu hóa.");
+    }
+
+    throw new Error(message || "Đăng nhập thất bại");
   }
 };
 
@@ -129,7 +171,23 @@ export const loginWithGoogle = async (): Promise<{ uid: string; displayName: str
 
     return { uid: user.uid, displayName: user.displayName || "" };
   } catch (error: any) {
-    throw new Error(error.message || "Đăng nhập Google thất bại");
+    const code = error?.code || "";
+    const message = error?.message || "Đăng nhập Google thất bại";
+
+    if (code === "auth/invalid-api-key" || code === "auth/network-request-failed") {
+      throw new Error(
+        "Lỗi cấu hình Firebase: API key không hợp lệ hoặc không thể kết nối mạng. " +
+        "Vui lòng kiểm tra biến VITE_FIREBASE_API_KEY trong file .env và đảm bảo kết nối Internet."
+      );
+    }
+    if (code === "auth/popup-closed-by-user") {
+      throw new Error("Đăng nhập Google bị hủy. Vui lòng thử lại.");
+    }
+    if (code === "auth/popup-blocked") {
+      throw new Error("Popup bị chặn. Vui lòng cho phép popup trong trình duyệt để đăng nhập Google.");
+    }
+
+    throw new Error(message || "Đăng nhập Google thất bại");
   }
 };
 

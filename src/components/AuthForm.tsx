@@ -6,7 +6,7 @@ import { Label } from "./ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Alert, AlertDescription } from "./ui/alert";
 import { registerWithEmail, loginWithEmail, loginWithGoogle } from "../services/authService";
-import { isFirebaseConfigured } from "../lib/firebase";
+import { getFirebaseConfigStatus } from "../lib/firebase";
 
 interface AuthFormProps {
   onSuccess: (user: { uid: string; displayName: string }) => void;
@@ -19,7 +19,8 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const firebaseConfigured = isFirebaseConfigured();
+  const firebaseStatus = getFirebaseConfigStatus();
+  const firebaseConfigured = firebaseStatus.configured;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,9 +86,24 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
         {!firebaseConfigured && (
           <Alert variant="destructive" className="mb-4">
             <AlertDescription>
-              Firebase chưa được cấu hình. Vui lòng thêm các biến{" "}
-              <code className="bg-muted/10 px-1 rounded">VITE_FIREBASE_*</code> từ Firebase Console vào file{" "}
-              <code className="bg-muted/10 px-1 rounded">.env</code>, sau đó khởi động lại ứng dụng.
+              <div className="space-y-1">
+                <p>
+                  <strong>Firebase chưa được cấu hình.</strong> Vui lòng thêm các biến{" "}
+                  <code className="bg-muted/10 px-1 rounded">VITE_FIREBASE_*</code>{" "}
+                  từ Firebase Console vào file{" "}
+                  <code className="bg-muted/10 px-1 rounded">.env</code>, sau đó khởi động lại ứng dụng.
+                </p>
+                {firebaseStatus.missing.length > 0 && (
+                  <p className="text-xs opacity-80">
+                    Thiếu:{" "}
+                    {firebaseStatus.missing.map((key) => (
+                      <code key={key} className="bg-muted/10 px-1 rounded mx-0.5">
+                        {key}
+                      </code>
+                    ))}
+                  </p>
+                )}
+              </div>
             </AlertDescription>
           </Alert>
         )}

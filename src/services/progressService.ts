@@ -47,6 +47,7 @@ const toIsoString = (value: unknown): string | null => {
  * Lấy tất cả tiến trình của người dùng
  */
 export const getUserProgress = async (uid: string): Promise<UserWordProgress[]> => {
+  ensureFirebaseConfigured();
   try {
     const progressRef = collection(db, "users", uid, "progress");
     const querySnapshot = await getDocs(progressRef);
@@ -71,6 +72,7 @@ export const getWordProgress = async (
   uid: string,
   wordId: string
 ): Promise<UserWordProgress | null> => {
+  ensureFirebaseConfigured();
   try {
     const progressRef = doc(db, "users", uid, "progress", wordId);
     const progressDoc = await getDoc(progressRef);
@@ -99,6 +101,7 @@ export const updateWordProgress = async (
   reviewResult: { quality: 0 | 1 | 2 | 3 | 4 | 5; timeSpentMs?: number },
   currentProgress?: UserWordProgress
 ): Promise<SRSResult> => {
+  ensureFirebaseConfigured();
   try {
     const progressRef = doc(db, "users", uid, "progress", wordId);
     let existingProgress = currentProgress;
@@ -200,6 +203,7 @@ export const markWordAsDifficult = async (
   wordId: string,
   isDifficult: boolean
 ): Promise<void> => {
+  ensureFirebaseConfigured();
   try {
     const progressRef = doc(db, "users", uid, "progress", wordId);
     await updateDoc(progressRef, { isDifficult });
@@ -213,6 +217,7 @@ export const markWordAsDifficult = async (
  * Xóa tiến trình của một từ (khi xóa course)
  */
 export const deleteWordProgress = async (uid: string, wordId: string): Promise<void> => {
+  ensureFirebaseConfigured();
   try {
     const progressRef = doc(db, "users", uid, "progress", wordId);
     await deleteDoc(progressRef);
@@ -226,6 +231,7 @@ export const deleteWordProgress = async (uid: string, wordId: string): Promise<v
  * Cập nhật streak count của người dùng
  */
 export const updateUserStreak = async (uid: string): Promise<void> => {
+  ensureFirebaseConfigured();
   try {
     const userRef = doc(db, "users", uid);
     const userDoc = await getDoc(userRef);
@@ -266,6 +272,7 @@ export const updateUserStreak = async (uid: string): Promise<void> => {
  * Lấy leaderboard (top người dùng theo XP)
  */
 export const getLeaderboard = async (limit: number = 10): Promise<any[]> => {
+  ensureFirebaseConfigured();
   try {
     const usersRef = collection(db, "users");
     const querySnapshot = await getDocs(usersRef);
@@ -314,6 +321,7 @@ export const subscribeToProgressChanges = (
   uid: string,
   callback: (progress: UserWordProgress[]) => void
 ) => {
+  ensureFirebaseConfigured();
   const progressRef = collection(db, "users", uid, "progress");
   return onSnapshot(progressRef, (snapshot) => {
     const progress = snapshot.docs.map((d) => {

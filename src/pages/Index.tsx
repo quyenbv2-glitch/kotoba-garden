@@ -10,7 +10,7 @@ import { Statistics } from "../components/Statistics";
 import { Leaderboard } from "../components/Leaderboard";
 import { FirebaseToolkit } from "../components/FirebaseToolkit";
 import { PlantStageBadge } from "../components/ui/plant-stage-badge";
-import { onAuthStateChanged, firebaseSignOut, auth, db, isFirebaseConfigured } from "../lib/firebase";
+import { onAuthStateChanged, firebaseSignOut, auth, db, isFirebaseConfigured, getFirebaseConfigStatus } from "../lib/firebase";
 import { getUserProgress } from "../services/progressService";
 import { getUserProfile } from "../services/authService";
 import { SAMPLE_COURSES, HIRAGANA_WORDS, KATAKANA_WORDS, JLPT_N5_WORDS, getWordsByCourse } from "../data/sampleWords";
@@ -27,6 +27,8 @@ export default function Index() {
   const [showImport, setShowImport] = useState(false);
   const [activeTab, setActiveTab] = useState<"garden" | "stats" | "leaderboard" | "toolkit">("garden");
   const [loading, setLoading] = useState(true);
+  const firebaseStatus = getFirebaseConfigStatus();
+  const firebaseConfigured = firebaseStatus.configured;
 
   // Auth state
   useEffect(() => {
@@ -142,21 +144,38 @@ export default function Index() {
 
   if (!user) {
       return (
-        <div className="min-h-screen bg-gray-50">
-          <div className="max-w-md mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            {!isFirebaseConfigured() && (
-              <Alert variant="destructive" className="mb-4">
-                <AlertDescription>
-                  Firebase chưa được cấu hình. Vui lòng thêm các biến <code className="bg-muted/10 px-1 rounded">VITE_FIREBASE_*</code> từ Firebase Console vào file <code className="bg-muted/10 px-1 rounded">.env</code>, sau đó khởi động lại ứng dụng.
-                </AlertDescription>
-              </Alert>
-            )}
-            <AuthForm onSuccess={(userData) => {
-              // This will be handled by auth state change
-            }} />
-          </div>
-        </div>
-      );
+              <div className="min-h-screen bg-gray-50">
+                <div className="max-w-md mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                  {!firebaseConfigured && (
+                    <Alert variant="destructive" className="mb-4">
+                      <AlertDescription>
+                        <div className="space-y-1">
+                          <p>
+                            <strong>Firebase chưa được cấu hình.</strong> Vui lòng thêm các biến{" "}
+                            <code className="bg-muted/10 px-1 rounded">VITE_FIREBASE_*</code>{" "}
+                            từ Firebase Console vào file{" "}
+                            <code className="bg-muted/10 px-1 rounded">.env</code>, sau đó khởi động lại ứng dụng.
+                          </p>
+                          {firebaseStatus.missing.length > 0 && (
+                            <p className="text-xs opacity-80">
+                              Thiếu:{" "}
+                              {firebaseStatus.missing.map((key) => (
+                                <code key={key} className="bg-muted/10 px-1 rounded mx-0.5">
+                                  {key}
+                                </code>
+                              ))}
+                            </p>
+                          )}
+                        </div>
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                  <AuthForm onSuccess={(userData) => {
+                    // This will be handled by auth state change
+                  }} />
+                </div>
+              </div>
+            );
     }
 
   return (
@@ -222,7 +241,11 @@ export default function Index() {
               </div>
               <Button
                 variant="outline"
-                onClick={() => firebaseSignOut(auth)}
+                onClick={() => {
+                  if (isFirebaseConfigured() && auth) {
+                    firebaseSignOut(auth);
+                  }
+                }}
                 size="sm"
               >
                 Đăng xuất

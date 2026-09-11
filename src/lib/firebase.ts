@@ -92,4 +92,41 @@ export {
   type DocumentData,
 } from "firebase/firestore";
 
+/**
+ * Lấy trạng thái cấu hình Firebase hiện tại
+ * Trả về cấu hình cấu hình đầy đủ và danh sách các biến thiếu
+ */
+export const getFirebaseConfigStatus = (): {
+  configured: boolean;
+  missing: string[];
+  apiKeyValid: boolean;
+} => {
+  const apiKeyValid =
+    !!firebaseConfig.apiKey &&
+    firebaseConfig.apiKey !== "YOUR_API_KEY" &&
+    firebaseConfig.apiKey.startsWith("AIza") &&
+    firebaseConfig.apiKey.length >= 30;
+
+  const missing: string[] = [];
+
+  if (!firebaseConfig.apiKey || firebaseConfig.apiKey === "YOUR_API_KEY") {
+    missing.push("VITE_FIREBASE_API_KEY");
+  }
+  if (!firebaseConfig.projectId || firebaseConfig.projectId === "YOUR_PROJECT_ID") {
+    missing.push("VITE_FIREBASE_PROJECT_ID");
+  }
+  if (!firebaseConfig.authDomain) {
+    missing.push("VITE_FIREBASE_AUTH_DOMAIN");
+  }
+  if (!firebaseConfig.appId) {
+    missing.push("VITE_FIREBASE_APP_ID");
+  }
+
+  return {
+    configured: isFirebaseConfigured() && apiKeyValid,
+    missing,
+    apiKeyValid,
+  };
+};
+
 export { app, auth, db, storage, functions };

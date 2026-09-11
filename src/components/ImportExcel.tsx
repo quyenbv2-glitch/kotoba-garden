@@ -6,7 +6,7 @@ import { Label } from "./ui/label";
 import { Alert, AlertDescription } from "./ui/alert";
 import { parseExcelFile, createTemplateFile, downloadFile } from "../utils/excelHandler";
 import { addDoc, collection, getDoc, doc, writeBatch, updateDoc } from "../lib/firebase";
-import { db } from "../lib/firebase";
+import { db, isFirebaseConfigured } from "../lib/firebase";
 
 interface ImportExcelProps {
   uid: string;
@@ -22,11 +22,17 @@ export function ImportExcel({ uid, onSuccess }: ImportExcelProps) {
   const [success, setSuccess] = useState("");
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setError("");
-    setLoading(true);
+      const file = e.target.files?.[0];
+      if (!file) return;
+  
+      if (!isFirebaseConfigured() || !db) {
+        setError("Firebase chưa được cấu hình. Vui lòng thêm các biến VITE_FIREBASE_* vào file .env.");
+        setLoading(false);
+        return;
+      }
+  
+      setError("");
+      setLoading(true);
 
     try {
       // Parse file

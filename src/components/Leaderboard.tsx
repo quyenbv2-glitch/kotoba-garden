@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query, limit } from "../lib/firebase";
-import { db } from "../lib/firebase";
+import { db, isFirebaseConfigured } from "../lib/firebase";
 
 interface LeaderboardEntry {
   uid: string;
@@ -38,6 +38,10 @@ export function Leaderboard({ currentUid }: LeaderboardProps) {
     const load = async () => {
       setLoading(true);
       try {
+        if (!isFirebaseConfigured() || !db) {
+          if (!cancelled) setEntries(MOCK_LEADERBOARD);
+          return;
+        }
         // Thử tải từ Firestore; nếu không có dữ liệu thì dùng mock
         const q = query(
           collection(db, "userProfiles"),
