@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { Word, UserWordProgress, ReviewMode } from "../types/kotoba";
 import { computeSRSReview, calculateXP } from "../utils/srsCalculator";
 import { updateWordProgress, getWordProgress } from "../services/progressService";
@@ -16,6 +16,8 @@ interface ReviewSessionProps {
   onComplete: (results: { wordId: string; quality: number }[]) => void;
   onClose: () => void;
 }
+
+const QUIZ_QUESTION_LIMIT = 10;
 
 /**
  * Chế độ 1: Planting - Học từ mới
@@ -192,19 +194,25 @@ function QuizMode({ words, progress, uid, onComplete, onClose }: ReviewSessionPr
   const [showResult, setShowResult] = useState(false);
   const [results, setResults] = useState<{ wordId: string; quality: number }[]>([]);
 
-  const currentWord = words[currentIndex];
-  const currentProgress = progress.find((p) => p.wordId === currentWord?.id);
+  // Giới hạn số câu trắc nghiệm mỗi buổi
+  const quizWords = useMemo(() => {
+    const shuffled = [...words].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, Math.min(QUIZ_QUESTION_LIMIT, words.length));
+  }, [words]);
+
+  const currentWord = quizWords[currentIndex];
+  const currentProgress = currentWord ? progress.find((p) => p.wordId === currentWord.id) : undefined;
 
   // Tạo options ngẫu nhiên
   useEffect(() => {
     if (!currentWord) return;
-    const otherWords = words.filter((w) => w.id !== currentWord.id);
+    const otherWords = quizWords.filter((w) => w.id !== currentWord.id);
     const shuffled = [...otherWords].sort(() => Math.random() - 0.5);
     const selected = [currentWord, ...shuffled.slice(0, 3)].sort(() => Math.random() - 0.5);
     setOptions(selected);
     setSelectedOption(null);
     setShowResult(false);
-  }, [currentWord, words]);
+  }, [currentWord, quizWords]);
 
   const handleSelect = (optionId: string) => {
     setSelectedOption(optionId);
@@ -229,7 +237,7 @@ function QuizMode({ words, progress, uid, onComplete, onClose }: ReviewSessionPr
       });
     }
 
-    if (currentIndex < words.length - 1) {
+    if (currentIndex < quizWords.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
       onComplete(results);
@@ -255,19 +263,19 @@ function QuizMode({ words, progress, uid, onComplete, onClose }: ReviewSessionPr
     <Card className="max-w-2xl mx-auto">
       <CardContent className="p-6">
         <div className="mb-6">
-          <div className="flex justify-between text-sm mb-2">
-            <span>Câu {currentIndex + 1} / {words.length}</span>
-            <span>{Math.round(((currentIndex + 1) / words.length) * 100)}%</span>
-          </div>
-          <Progress value={((currentIndex + 1) / words.length) * 100} className="h-2" />
-        </div>
-
-        <div className="text-center mb-6">
-          <div className="text-sm text-gray-500 mb-2">Chọn nghĩa đúng cho:</div>
-          <div className="text-5xl font-bold text-gray-800 mb-2">{currentWord.kanji}</div>
-          <div className="text-xl text-gray-600">{currentWord.kana}</div>
-          <div className="text-gray-400">{currentWord.romaji}</div>
-        </div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span>Câu {currentIndex + 1} / {quizWords.length}</span>
+                    <span>{Math.round(((currentIndex + 1) / quizWords.length) * 100)}%</span>
+                  </div>
+                  <Progress value={((currentIndex + 1) / quizWords.length) * 100} className="h-2" />
+                </div>
+        
+                <div className="text-center mb-6">
+                  <div className="text-sm text-gray-500 mb-2">Chọn nghĩa đúng cho:</div>
+                  <div className="text-5xl font-bold text-gray-800 mb-2">{currentWord.kanji}</div>
+                  <div className="text-xl text-gray-600">{currentWord.kana}</div>
+                  <div className="text-gray-400">{currentWord.romaji}</div>
+                </div>
 
         <div className="grid grid-cols-2 gap-3">
           {options.map((option) => {
