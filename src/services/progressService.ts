@@ -167,6 +167,7 @@ export const updateWordProgress = async (
  * Lấy danh sách từ cần ôn tập hôm nay
  */
 export const getTodayReviewWords = async (uid: string): Promise<UserWordProgress[]> => {
+  ensureFirebaseConfigured();
   try {
     const userProgress = await getUserProgress(uid);
     const today = new Date();
@@ -186,6 +187,7 @@ export const getTodayReviewWords = async (uid: string): Promise<UserWordProgress
  * Lấy danh sách từ khó (tỉ lệ sai cao)
  */
 export const getDifficultWords = async (uid: string): Promise<UserWordProgress[]> => {
+  ensureFirebaseConfigured();
   try {
     const userProgress = await getUserProgress(uid);
     return userProgress.filter((progress) => progress.isDifficult);
