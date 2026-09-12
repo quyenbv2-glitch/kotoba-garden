@@ -10,15 +10,24 @@ import { getFirestore, Firestore } from "firebase/firestore";
 import { getStorage, FirebaseStorage } from "firebase/storage";
 import { getFunctions, Functions } from "firebase/functions";
 
-// Firebase configuration - thay thế bằng config của bạn
+// Firebase configuration - sử dụng biến môi trường nếu hợp lệ,
+// nếu không thì dùng cấu hình đã cung cấp để ứng dụng hoạt động được
+const getValidApiKey = (): string => {
+  const envKey = import.meta.env.VITE_FIREBASE_API_KEY;
+  if (envKey && envKey.startsWith("AIza") && envKey.length >= 30) {
+    return envKey;
+  }
+  return "AIzaSyAjMzkYhh32TS2DpJ_f5K9RO-U683euxD4";
+};
+
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "",
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "",
+  apiKey: getValidApiKey(),
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "web-tu-moi.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "web-tu-moi",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "web-tu-moi.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "980739079340",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:980739079340:web:493e3c5a601b26ff597309",
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-T8KWZDQ6N2",
 };
 
 // Kiểm tra xem Firebase đã được cấu hình đầy đủ chưa
