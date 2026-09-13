@@ -96,7 +96,7 @@ export function Statistics({ progress, words, profile }: StatisticsProps) {
           />
         </div>
         <p className="text-xs text-gray-500 mt-2">
-          {stats.mastered} / {stats.total} từ đã đạt giai đoạn cuối (Hoa 🌸 / Quả 🍎)
+          {stats.mastered} / {stats.total} từ đã đạt giai đoạn cuối (Cây 🌳 / Quả 🍎)
         </p>
       </div>
 

@@ -59,7 +59,7 @@ export const PLANT_STAGES: Record<PlantStageId, PlantStageInfo> = {
   5: {
     id: 5,
     label: "Cây trưởng thành",
-    emoji: "🌳",
+    emoji: "🌲",
     description: "Vững chãi, nhớ rất chắc chắn trong trí nhớ trung hạn",
     minRepetitions: 5,
     color: "#047857",
@@ -68,7 +68,7 @@ export const PLANT_STAGES: Record<PlantStageId, PlantStageInfo> = {
   6: {
     id: 6,
     label: "Đơm hoa kết trái",
-    emoji: "🌸",
+    emoji: "🌳",
     description: "Ghi nhớ vĩnh viễn (Bộ nhớ dài hạn - Mastered)",
     minRepetitions: 6,
     color: "#D946EF",
